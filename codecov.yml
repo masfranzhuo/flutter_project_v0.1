@@ -1,0 +1,6 @@
+ignore:
+  - '**/*.mocks.dart'
+  - '**/*.g.dart'
+  - '**/*.freezed.dart'
+  - '**/*.config.dart'
+  - '**/*.injectable.dart'

@@ -1,6 +1,6 @@
 import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/core/services/http_client.dart';
-import 'package:flutter_project/core/constants/pagination.dart';
+import 'package:flutter_project/core/config/pagination.dart';
 import 'package:flutter_project/src/entities/post.dart';
 import 'package:flutter_project/src/entities/user.dart';
 import 'package:injectable/injectable.dart';
@@ -11,6 +11,7 @@ abstract class UserDataSource {
     int limit = Pagination.limit,
   });
   Future<User> getUser({required String id});
+  // TODO: remove this, add test case and simple ui
   Future<List<Post>> getUserPosts({
     required String id,
     required int pages,

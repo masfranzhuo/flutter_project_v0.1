@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_project/core/utils/failure.dart';
-import 'package:flutter_project/core/constants/pagination.dart';
+import 'package:flutter_project/core/config/pagination.dart';
 import 'package:flutter_project/src/data_sources/user_data_source.dart';
 import 'package:flutter_project/src/entities/post.dart';
 import 'package:flutter_project/src/entities/user.dart';

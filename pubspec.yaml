@@ -37,6 +37,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - .env_dev
+    - .env_staging
     - .env
     - assets/flutter_i18n/en_US/
     - assets/flutter_i18n/id_ID/

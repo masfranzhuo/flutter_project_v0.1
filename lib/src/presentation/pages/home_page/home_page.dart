@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_project/core/utils/environment.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,7 +22,11 @@ class _MyHomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(FlutterI18n.translate(context, 'label.pages.home.title')),
+        title: Text(
+          Environment().config.appName +
+              ' - ' +
+              FlutterI18n.translate(context, 'label.pages.home.title'),
+        ),
       ),
       body: Center(
         child: Column(

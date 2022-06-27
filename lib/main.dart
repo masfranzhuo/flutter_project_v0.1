@@ -5,11 +5,17 @@ import 'package:flutter_i18n/loaders/namespace_file_translation_loader.dart';
 import 'package:flutter_project/core/di/injector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_project/core/config/env_config.dart';
+import 'package:flutter_project/core/utils/environment.dart';
 import 'package:flutter_project/src/presentation/pages/main_page.dart';
 
 Future<void> main() async {
-  /// TODO: environment
   WidgetsFlutterBinding.ensureInitialized();
+
+  Environment().initConfig(EnvConfig.environment);
+
+  await dotenv.load(fileName: Environment().config.envFileName);
+
   final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
     translationLoader: NamespaceFileTranslationLoader(
       namespaces: ['label'],
@@ -25,7 +31,8 @@ Future<void> main() async {
       }
     },
   );
-  await dotenv.load();
+
   configureDependencies();
+
   runApp(MainPage(flutterI18nDelegate: flutterI18nDelegate));
 }

@@ -27,7 +27,7 @@ class MainPage extends StatelessWidget {
         Locale('en', 'US'),
         Locale('id', 'ID'),
       ],
-      home: const HomePage(title: 'Home Page'),
+      home: const HomePage(),
     );
   }
 }

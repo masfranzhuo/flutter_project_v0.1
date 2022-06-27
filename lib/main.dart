@@ -31,6 +31,5 @@ Future<void> main() async {
       }
     },
   );
-
   runApp(MainPage(flutterI18nDelegate: flutterI18nDelegate));
 }

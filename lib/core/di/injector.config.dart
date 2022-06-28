@@ -11,14 +11,13 @@ import 'package:injectable/injectable.dart' as _i2;
 import '../../src/data_sources/user_data_source.dart' as _i5;
 import '../../src/repositories/user_repository.dart' as _i6;
 import '../../src/state_managers/user_detail_page_cubit/user_detail_page_cubit.dart'
-    as _i10;
+    as _i9;
 import '../../src/state_managers/users_page_cubit/users_page_cubit.dart'
-    as _i11;
+    as _i10;
 import '../../src/use_cases/get_user.dart' as _i7;
-import '../../src/use_cases/get_user_posts.dart' as _i8;
-import '../../src/use_cases/get_users.dart' as _i9;
+import '../../src/use_cases/get_users.dart' as _i8;
 import '../services/http_client.dart' as _i4;
-import 'register_module.dart' as _i12; // ignore_for_file: unnecessary_lambdas
+import 'register_module.dart' as _i11; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -35,15 +34,13 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i6.UserRepositoryImpl(dataSource: get<_i5.UserDataSource>()));
   gh.lazySingleton<_i7.GetUser>(
       () => _i7.GetUser(repository: get<_i6.UserRepository>()));
-  gh.lazySingleton<_i8.GetUserPosts>(
-      () => _i8.GetUserPosts(repository: get<_i6.UserRepository>()));
-  gh.lazySingleton<_i9.GetUsers>(
-      () => _i9.GetUsers(repository: get<_i6.UserRepository>()));
-  gh.singleton<_i10.UserDetailPageCubit>(_i10.UserDetailPageCubit(
-      getUser: get<_i7.GetUser>(), getUserPosts: get<_i8.GetUserPosts>()));
-  gh.singleton<_i11.UsersPageCubit>(
-      _i11.UsersPageCubit(getUsers: get<_i9.GetUsers>()));
+  gh.lazySingleton<_i8.GetUsers>(
+      () => _i8.GetUsers(repository: get<_i6.UserRepository>()));
+  gh.singleton<_i9.UserDetailPageCubit>(
+      _i9.UserDetailPageCubit(getUser: get<_i7.GetUser>()));
+  gh.singleton<_i10.UsersPageCubit>(
+      _i10.UsersPageCubit(getUsers: get<_i8.GetUsers>()));
   return get;
 }
 
-class _$RegisterModule extends _i12.RegisterModule {}
+class _$RegisterModule extends _i11.RegisterModule {}

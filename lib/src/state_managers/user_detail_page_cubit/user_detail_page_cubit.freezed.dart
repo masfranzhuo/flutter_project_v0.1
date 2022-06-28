@@ -18,21 +18,11 @@ class _$UserDetailPageStateTearOff {
   const _$UserDetailPageStateTearOff();
 
   _UserDetailPageState call(
-      {Failure? failure,
-      bool isLoading = false,
-      User? user,
-      List<Post> userPosts = const [],
-      bool isFriend = false,
-      bool isLiked = false,
-      int postPages = 0}) {
+      {Failure? failure, bool isLoading = false, User? user}) {
     return _UserDetailPageState(
       failure: failure,
       isLoading: isLoading,
       user: user,
-      userPosts: userPosts,
-      isFriend: isFriend,
-      isLiked: isLiked,
-      postPages: postPages,
     );
   }
 }
@@ -45,10 +35,6 @@ mixin _$UserDetailPageState {
   Failure? get failure => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   User? get user => throw _privateConstructorUsedError;
-  List<Post> get userPosts => throw _privateConstructorUsedError;
-  bool get isFriend => throw _privateConstructorUsedError;
-  bool get isLiked => throw _privateConstructorUsedError;
-  int get postPages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserDetailPageStateCopyWith<UserDetailPageState> get copyWith =>
@@ -60,14 +46,7 @@ abstract class $UserDetailPageStateCopyWith<$Res> {
   factory $UserDetailPageStateCopyWith(
           UserDetailPageState value, $Res Function(UserDetailPageState) then) =
       _$UserDetailPageStateCopyWithImpl<$Res>;
-  $Res call(
-      {Failure? failure,
-      bool isLoading,
-      User? user,
-      List<Post> userPosts,
-      bool isFriend,
-      bool isLiked,
-      int postPages});
+  $Res call({Failure? failure, bool isLoading, User? user});
 
   $UserCopyWith<$Res>? get user;
 }
@@ -86,10 +65,6 @@ class _$UserDetailPageStateCopyWithImpl<$Res>
     Object? failure = freezed,
     Object? isLoading = freezed,
     Object? user = freezed,
-    Object? userPosts = freezed,
-    Object? isFriend = freezed,
-    Object? isLiked = freezed,
-    Object? postPages = freezed,
   }) {
     return _then(_value.copyWith(
       failure: failure == freezed
@@ -104,22 +79,6 @@ class _$UserDetailPageStateCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User?,
-      userPosts: userPosts == freezed
-          ? _value.userPosts
-          : userPosts // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
-      isFriend: isFriend == freezed
-          ? _value.isFriend
-          : isFriend // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isLiked: isLiked == freezed
-          ? _value.isLiked
-          : isLiked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      postPages: postPages == freezed
-          ? _value.postPages
-          : postPages // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 
@@ -142,14 +101,7 @@ abstract class _$UserDetailPageStateCopyWith<$Res>
           $Res Function(_UserDetailPageState) then) =
       __$UserDetailPageStateCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {Failure? failure,
-      bool isLoading,
-      User? user,
-      List<Post> userPosts,
-      bool isFriend,
-      bool isLiked,
-      int postPages});
+  $Res call({Failure? failure, bool isLoading, User? user});
 
   @override
   $UserCopyWith<$Res>? get user;
@@ -171,10 +123,6 @@ class __$UserDetailPageStateCopyWithImpl<$Res>
     Object? failure = freezed,
     Object? isLoading = freezed,
     Object? user = freezed,
-    Object? userPosts = freezed,
-    Object? isFriend = freezed,
-    Object? isLiked = freezed,
-    Object? postPages = freezed,
   }) {
     return _then(_UserDetailPageState(
       failure: failure == freezed
@@ -189,22 +137,6 @@ class __$UserDetailPageStateCopyWithImpl<$Res>
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
               as User?,
-      userPosts: userPosts == freezed
-          ? _value.userPosts
-          : userPosts // ignore: cast_nullable_to_non_nullable
-              as List<Post>,
-      isFriend: isFriend == freezed
-          ? _value.isFriend
-          : isFriend // ignore: cast_nullable_to_non_nullable
-              as bool,
-      isLiked: isLiked == freezed
-          ? _value.isLiked
-          : isLiked // ignore: cast_nullable_to_non_nullable
-              as bool,
-      postPages: postPages == freezed
-          ? _value.postPages
-          : postPages // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -212,14 +144,7 @@ class __$UserDetailPageStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_UserDetailPageState extends _UserDetailPageState {
-  _$_UserDetailPageState(
-      {this.failure,
-      this.isLoading = false,
-      this.user,
-      this.userPosts = const [],
-      this.isFriend = false,
-      this.isLiked = false,
-      this.postPages = 0})
+  _$_UserDetailPageState({this.failure, this.isLoading = false, this.user})
       : super._();
 
   @override
@@ -229,22 +154,10 @@ class _$_UserDetailPageState extends _UserDetailPageState {
   final bool isLoading;
   @override
   final User? user;
-  @JsonKey()
-  @override
-  final List<Post> userPosts;
-  @JsonKey()
-  @override
-  final bool isFriend;
-  @JsonKey()
-  @override
-  final bool isLiked;
-  @JsonKey()
-  @override
-  final int postPages;
 
   @override
   String toString() {
-    return 'UserDetailPageState(failure: $failure, isLoading: $isLoading, user: $user, userPosts: $userPosts, isFriend: $isFriend, isLiked: $isLiked, postPages: $postPages)';
+    return 'UserDetailPageState(failure: $failure, isLoading: $isLoading, user: $user)';
   }
 
   @override
@@ -254,11 +167,7 @@ class _$_UserDetailPageState extends _UserDetailPageState {
             other is _UserDetailPageState &&
             const DeepCollectionEquality().equals(other.failure, failure) &&
             const DeepCollectionEquality().equals(other.isLoading, isLoading) &&
-            const DeepCollectionEquality().equals(other.user, user) &&
-            const DeepCollectionEquality().equals(other.userPosts, userPosts) &&
-            const DeepCollectionEquality().equals(other.isFriend, isFriend) &&
-            const DeepCollectionEquality().equals(other.isLiked, isLiked) &&
-            const DeepCollectionEquality().equals(other.postPages, postPages));
+            const DeepCollectionEquality().equals(other.user, user));
   }
 
   @override
@@ -266,11 +175,7 @@ class _$_UserDetailPageState extends _UserDetailPageState {
       runtimeType,
       const DeepCollectionEquality().hash(failure),
       const DeepCollectionEquality().hash(isLoading),
-      const DeepCollectionEquality().hash(user),
-      const DeepCollectionEquality().hash(userPosts),
-      const DeepCollectionEquality().hash(isFriend),
-      const DeepCollectionEquality().hash(isLiked),
-      const DeepCollectionEquality().hash(postPages));
+      const DeepCollectionEquality().hash(user));
 
   @JsonKey(ignore: true)
   @override
@@ -280,14 +185,8 @@ class _$_UserDetailPageState extends _UserDetailPageState {
 }
 
 abstract class _UserDetailPageState extends UserDetailPageState {
-  factory _UserDetailPageState(
-      {Failure? failure,
-      bool isLoading,
-      User? user,
-      List<Post> userPosts,
-      bool isFriend,
-      bool isLiked,
-      int postPages}) = _$_UserDetailPageState;
+  factory _UserDetailPageState({Failure? failure, bool isLoading, User? user}) =
+      _$_UserDetailPageState;
   _UserDetailPageState._() : super._();
 
   @override
@@ -296,14 +195,6 @@ abstract class _UserDetailPageState extends UserDetailPageState {
   bool get isLoading;
   @override
   User? get user;
-  @override
-  List<Post> get userPosts;
-  @override
-  bool get isFriend;
-  @override
-  bool get isLiked;
-  @override
-  int get postPages;
   @override
   @JsonKey(ignore: true)
   _$UserDetailPageStateCopyWith<_UserDetailPageState> get copyWith =>

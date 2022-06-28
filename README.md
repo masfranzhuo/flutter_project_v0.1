@@ -1,3 +1,6 @@
+![Test](https://github.com/masfranzhuo/flutter_project/workflows/Test/badge.svg)
+[![codecov](https://codecov.io/gh/masfranzhuo/flutter_project/branch/main/graph/badge.svg?token=D0CPD9FD01)](https://codecov.io/gh/masfranzhuo/flutter_project)
+
 # flutter_project
 
 A new Flutter project.

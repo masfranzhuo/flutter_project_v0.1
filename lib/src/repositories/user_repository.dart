@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/core/config/pagination.dart';
 import 'package:flutter_project/src/data_sources/user_data_source.dart';
-import 'package:flutter_project/src/entities/post.dart';
 import 'package:flutter_project/src/entities/user.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,11 +11,6 @@ abstract class UserRepository {
     int limit = Pagination.limit,
   });
   Future<Either<Failure, User>> getUser({required String id});
-  Future<Either<Failure, List<Post>>> getUserPosts({
-    required String id,
-    required int pages,
-    int limit = Pagination.limit,
-  });
 }
 
 @LazySingleton(as: UserRepository)
@@ -43,25 +37,6 @@ class UserRepositoryImpl extends UserRepository {
   Future<Either<Failure, User>> getUser({required String id}) async {
     try {
       final result = await dataSource.getUser(id: id);
-
-      return Right(result);
-    } on Exception catch (e) {
-      return Left(UnexpectedFailure(message: e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<Post>>> getUserPosts({
-    required String id,
-    required int pages,
-    int limit = Pagination.limit,
-  }) async {
-    try {
-      final result = await dataSource.getUserPosts(
-        id: id,
-        pages: pages,
-        limit: limit,
-      );
 
       return Right(result);
     } on Exception catch (e) {

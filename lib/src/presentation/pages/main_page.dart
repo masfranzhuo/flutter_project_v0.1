@@ -35,19 +35,6 @@ class MainPage extends StatelessWidget {
         ],
         home: const HomePage(),
       ),
-<<<<<<< HEAD
-=======
-      localizationsDelegates: [
-        flutterI18nDelegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
-      ],
-      supportedLocales: const [
-        Locale('en', 'US'),
-        Locale('id', 'ID'),
-      ],
-      home: const HomePage(),
->>>>>>> 773bb7b (fix home page title)
     );
   }
 }

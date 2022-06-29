@@ -43,10 +43,33 @@ void main() {
 
       expect((result as Right).value, users);
 
-      verify(mockUserDataSource.getUsers(
-        pages: anyNamed('pages'),
-        limit: anyNamed('limit'),
-      ));
+      verify(mockUserDataSource.getUsers(pages: 1, limit: 10));
+    });
+  });
+
+  group('getUser', () {
+    test('should return UnexpectedFailure()', () async {
+      when(mockUserDataSource.getUser(
+        id: anyNamed('id'),
+      )).thenThrow(Exception());
+
+      final result = await repository.getUser(id: 'anyId');
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
+
+      verify(mockUserDataSource.getUser(id: 'anyId'));
+    });
+
+    test('should return user', () async {
+      when(mockUserDataSource.getUser(
+        id: anyNamed('id'),
+      )).thenAnswer((_) async => user);
+
+      final result = await repository.getUser(id: 'anyId');
+
+      expect((result as Right).value, user);
+
+      verify(mockUserDataSource.getUser(id: 'anyId'));
     });
   });
 }

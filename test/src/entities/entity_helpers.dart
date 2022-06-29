@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_project/core/utils/formater.dart';
+import 'package:flutter_project/core/config/date_config.dart';
 import 'package:flutter_project/src/entities/location.dart';
 import 'package:flutter_project/src/entities/user.dart';
 
@@ -26,8 +26,8 @@ final user = User(
     country: 'Denmark',
     timezone: '-9:00',
   ),
-  dateOfBirth: dateTimeFromJson('1996-04-30T19:26:49.610Z'),
-  registerDate: dateTimeFromJson('2021-06-21T21:02:07.374Z'),
+  dateOfBirth: DateConfig.dateTimeFromJson('1996-04-30T19:26:49.610Z'),
+  registerDate: DateConfig.dateTimeFromJson('2021-06-21T21:02:07.374Z'),
 );
 
 final List<dynamic> usersJson = List<dynamic>.from(

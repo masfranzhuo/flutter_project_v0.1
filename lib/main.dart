@@ -18,7 +18,7 @@ Future<void> main() async {
 
   final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
     translationLoader: NamespaceFileTranslationLoader(
-      namespaces: ['label'],
+      namespaces: ['error', 'label', 'model'],
       useCountryCode: true,
       fallbackDir: 'en_US',
       basePath: 'assets/flutter_i18n',

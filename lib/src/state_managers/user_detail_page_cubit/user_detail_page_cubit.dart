@@ -22,16 +22,8 @@ class UserDetailPageCubit extends Cubit<UserDetailPageState> {
     final result = await _getUser(id);
 
     result.fold(
-      (failure) => emit(state.copyWith(
-        failure: failure,
-        isLoading: false,
-      )),
-      (user) {
-        emit(state.copyWith(
-          isLoading: false,
-          user: user,
-        ));
-      },
+      (failure) => emit(state.copyWith(failure: failure, isLoading: false)),
+      (user) => emit(state.copyWith(isLoading: false, user: user)),
     );
   }
 }

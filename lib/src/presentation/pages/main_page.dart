@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_project/src/presentation/pages/home_page/home_page.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MainPage extends StatelessWidget {
   final FlutterI18nDelegate flutterI18nDelegate;

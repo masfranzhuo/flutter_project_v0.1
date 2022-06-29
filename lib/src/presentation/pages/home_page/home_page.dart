@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/core/utils/environment.dart';
+import 'package:get_it/get_it.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,7 +26,10 @@ class _MyHomePageState extends State<HomePage> {
         title: Text(
           Environment().config.appName +
               ' - ' +
-              FlutterI18n.translate(context, 'label.pages.home.title'),
+              GetIt.I<TranslatorService>().translate(
+                context,
+                'label.pages.home.title',
+              ),
         ),
       ),
       body: Center(
@@ -33,7 +37,10 @@ class _MyHomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              FlutterI18n.translate(context, 'label.pages.home.text'),
+              GetIt.I<TranslatorService>().translate(
+                context,
+                'label.pages.home.text',
+              ),
             ),
             Text(
               '$_counter',
@@ -44,7 +51,10 @@ class _MyHomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: FlutterI18n.translate(context, 'label.pages.home.increment'),
+        tooltip: GetIt.I<TranslatorService>().translate(
+          context,
+          'label.pages.home.increment',
+        ),
         child: const Icon(Icons.add),
       ),
     );

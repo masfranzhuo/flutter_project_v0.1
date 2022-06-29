@@ -1,4 +1,4 @@
-import 'package:flutter_project/core/utils/formater.dart';
+import 'package:flutter_project/core/config/date_config.dart';
 import 'package:flutter_project/src/entities/location.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -22,9 +22,9 @@ class User with _$User {
     String? gender,
     String? email,
     String? phone,
-    @JsonKey(fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+    @JsonKey(fromJson: DateConfig.dateTimeFromJson, toJson: DateConfig.dateTimeToJson)
         required DateTime? dateOfBirth,
-    @JsonKey(fromJson: dateTimeFromJson, toJson: dateTimeToJson)
+    @JsonKey(fromJson: DateConfig.dateTimeFromJson, toJson: DateConfig.dateTimeToJson)
         required DateTime? registerDate,
     Location? location,
   }) = _User;

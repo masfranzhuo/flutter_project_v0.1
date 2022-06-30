@@ -13,3 +13,9 @@ Run this command
 > flutter pub get
 > flutter pub run build_runner build
 ```
+
+Create `.env`, `.env_staging`, `.env_development` file on root folder
+```
+ENV = DEVELOPMENT
+APP_ID = XXXXXX // get API key at https://dummyapi.io
+```

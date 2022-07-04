@@ -30,9 +30,11 @@ class UserDetailPage extends StatelessWidget {
     return BlocConsumer<UserDetailPageCubit, UserDetailPageState>(
       listener: (context, state) {
         if (state.failure != null) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.failure!.message),
-          ));
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+              content: Text(state.failure!.message),
+            ));
         }
       },
       builder: (context, state) {

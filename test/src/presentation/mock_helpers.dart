@@ -12,7 +12,11 @@ abstract class OnTap {
   void call(BuildContext context);
 }
 
-class MockOnTap extends Mock implements OnTap {}
+class MockOnTap extends Mock implements OnTap {
+  MockOnTap() {
+    registerFallbackValue(FakeBuildContext());
+  }
+}
 
 // translator service
 class MockTranslatorService extends Mock implements TranslatorServiceImpl {

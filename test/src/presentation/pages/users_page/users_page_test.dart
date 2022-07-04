@@ -212,6 +212,7 @@ void main() {
       await tester.pumpAndSettle();
 
       verify(() => mockObserver.didPush(any(), any()));
+      expect(find.byType(UsersPage), findsNothing);
       expect(find.byType(UserDetailPage), findsOneWidget);
     },
   );

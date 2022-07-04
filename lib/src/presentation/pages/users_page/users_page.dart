@@ -34,14 +34,16 @@ class UsersPage extends StatelessWidget {
     return BlocConsumer<UsersPageCubit, UsersPageState>(
       listener: (context, state) {
         if (state.failure != null) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-              GetIt.I<TranslatorService>().translate(
-                context,
-                'error.${state.failure?.code}',
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+              content: Text(
+                GetIt.I<TranslatorService>().translate(
+                  context,
+                  'error.${state.failure?.code}',
+                ),
               ),
-            ),
-          ));
+            ));
         }
       },
       builder: (context, state) {

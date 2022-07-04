@@ -13,7 +13,6 @@ void main() {
 
   setUpAll(() {
     HttpOverrides.global = null;
-    registerFallbackValue(FakeBuildContext());
   });
 
   setUp(() {

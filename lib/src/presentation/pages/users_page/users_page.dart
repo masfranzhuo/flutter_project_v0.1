@@ -52,6 +52,27 @@ class UsersPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
+        return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: MediaQuery.of(context).size.width > 720 ? 2 : 1,
+            childAspectRatio: MediaQuery.of(context).size.width /
+                (MediaQuery.of(context).size.width > 720 ? 150 : 75),
+          ),
+          itemCount: state.users.length,
+          itemBuilder: (context, index) {
+            final user = state.users[index];
+            return UserCardWidget(
+              user: user,
+              onTap: (context) {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => UserDetailPage(
+                    id: user.id,
+                  ),
+                ));
+              },
+            );
+          },
+        );
         return ListView(
           physics: const AlwaysScrollableScrollPhysics(),
           children: [

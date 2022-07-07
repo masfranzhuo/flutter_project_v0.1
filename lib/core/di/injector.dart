@@ -7,4 +7,5 @@ import 'package:flutter_project/core/di/injector.config.dart';
   preferRelativeImports: true,
   asExtension: false,
 )
-void configureDependencies() => $initGetIt(GetIt.instance);
+void configureDependencies(String env) =>
+    $initGetIt(GetIt.instance, environment: env);

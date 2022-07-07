@@ -9,6 +9,7 @@ import 'package:flutter_project/src/presentation/pages/users_page/users_page.dar
 import 'package:flutter_project/src/presentation/widgets/user_card_widget.dart';
 import 'package:flutter_project/src/state_managers/user_detail_page_cubit/user_detail_page_cubit.dart';
 import 'package:flutter_project/src/state_managers/users_page_cubit/users_page_cubit.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -44,7 +45,13 @@ void main() {
   });
 
   Future<void> _setUpEnvironment(WidgetTester tester) async {
-    await tester.pumpWidget(const MaterialApp(home: UsersPage()));
+    await tester.pumpWidget(ScreenUtilInit(
+      designSize: const Size(360, 690),
+      builder: (context, widget) => MaterialApp(
+        navigatorObservers: [mockObserver],
+        home: const UsersPage(),
+      ),
+    ));
   }
 
   testWidgets('should translate these keys', (tester) async {
@@ -87,10 +94,7 @@ void main() {
 
       expect(
         find.byWidgetPredicate(
-          (w) =>
-              w is Column &&
-              w.children.length == users.length &&
-              w.children.first is UserCardWidget,
+          (w) => w is UserCardWidget && w.user == users[0],
         ),
         findsOneWidget,
       );
@@ -159,7 +163,7 @@ void main() {
 
       await tester.fling(
         find.byWidgetPredicate(
-          (w) => w is Column && w.children.first is UserCardWidget,
+          (w) => w is UserCardWidget && w.user == users[0],
         ),
         const Offset(0, 300),
         1000,
@@ -200,10 +204,7 @@ void main() {
         UserDetailPageState(user: user),
       );
 
-      await tester.pumpWidget(MaterialApp(
-        navigatorObservers: [mockObserver],
-        home: const UsersPage(),
-      ));
+      await _setUpEnvironment(tester);
 
       final tapable = find.byKey(
         Key('user-card-widget-icon-button-key-${users[0].id}'),

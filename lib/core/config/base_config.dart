@@ -1,6 +1,5 @@
 abstract class BaseConfig {
   String get appName;
-  String get baseUrl;
   String get envFileName;
   bool get showDebugInfo;
 }
@@ -8,9 +7,6 @@ abstract class BaseConfig {
 class DevelopmentConfig implements BaseConfig {
   @override
   String get appName => 'Flutter Demo Development';
-
-  @override
-  String get baseUrl => 'https://dummyapi.io/data/v1/';
 
   @override
   String get envFileName => '.env_dev';
@@ -24,9 +20,6 @@ class StagingConfig implements BaseConfig {
   String get appName => 'Flutter Demo Staging';
 
   @override
-  String get baseUrl => 'https://dummyapi.io/data/v1/';
-
-  @override
   String get envFileName => '.env_staging';
 
   @override
@@ -36,9 +29,6 @@ class StagingConfig implements BaseConfig {
 class ProductionConfig implements BaseConfig {
   @override
   String get appName => 'Flutter Demo Production';
-
-  @override
-  String get baseUrl => 'https://dummyapi.io/data/v1/';
 
   @override
   String get envFileName => '.env';

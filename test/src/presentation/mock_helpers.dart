@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_project/core/config/base_config.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/src/state_managers/user_detail_page_cubit/user_detail_page_cubit.dart';
 import 'package:flutter_project/src/state_managers/users_page_cubit/users_page_cubit.dart';
@@ -53,3 +54,10 @@ class MockUserDetailPageCubit extends MockCubit<UserDetailPageState>
     implements UserDetailPageCubit {}
 
 class FakeUserDetailPageState extends Fake implements UserDetailPageState {}
+
+// base config
+class MockBaseConfig extends Mock implements BaseConfig {
+  MockBaseConfig() {
+    when(() => appName).thenReturn('any string');
+  }
+}

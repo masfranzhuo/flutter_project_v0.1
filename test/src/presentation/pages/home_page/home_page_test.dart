@@ -6,9 +6,8 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_project/core/config/env_config.dart';
+import 'package:flutter_project/core/config/base_config.dart';
 import 'package:flutter_project/core/services/translator.dart';
-import 'package:flutter_project/core/utils/environment.dart';
 import 'package:flutter_project/src/presentation/pages/home_page/home_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -16,12 +15,16 @@ import 'package:get_it/get_it.dart';
 import '../../mock_helpers.dart';
 
 void main() {
+  late MockBaseConfig mockBaseConfig;
   late MockTranslatorService mockTranslatorService;
 
   setUp(() {
-    Environment().initConfig(EnvConfig.environment);
-
+    mockBaseConfig = MockBaseConfig();
     mockTranslatorService = MockTranslatorService();
+
+    GetIt.I.registerLazySingleton<BaseConfig>(
+      () => mockBaseConfig,
+    );
     GetIt.I.registerLazySingleton<TranslatorService>(
       () => mockTranslatorService,
     );

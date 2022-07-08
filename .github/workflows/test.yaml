@@ -13,7 +13,6 @@ jobs:
         with:
           channel: 'stable'
       - run: touch .env
-      - run: touch .env_staging
       - run: touch .env_dev
       - run: flutter pub get
       - run: flutter pub run build_runner build

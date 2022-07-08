@@ -7,6 +7,7 @@ import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/src/presentation/pages/user_detail_page/user_detail_page.dart';
 import 'package:flutter_project/src/presentation/widgets/user_detail_card_widget.dart';
 import 'package:flutter_project/src/state_managers/user_detail_page_cubit/user_detail_page_cubit.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -40,7 +41,12 @@ void main() {
   });
 
   Future<void> _setUpEnvironment(WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: UserDetailPage(id: user.id)));
+    await tester.pumpWidget(ScreenUtilInit(
+      designSize: const Size(360, 690),
+      builder: (context, widget) => MaterialApp(
+        home: UserDetailPage(id: user.id),
+      ),
+    ));
   }
 
   testWidgets('should translate these keys', (tester) async {

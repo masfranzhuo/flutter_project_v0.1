@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_project/core/config/date_config.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/src/presentation/widgets/user_detail_card_widget.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
@@ -31,8 +32,11 @@ void main() {
   });
 
   Future<void> _setUpEnvironment(WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: UserDetailCardWidget(user: user),
+    await tester.pumpWidget(ScreenUtilInit(
+      designSize: const Size(360, 690),
+      builder: (context, widget) => MaterialApp(
+        home: UserDetailCardWidget(user: user),
+      ),
     ));
   }
 

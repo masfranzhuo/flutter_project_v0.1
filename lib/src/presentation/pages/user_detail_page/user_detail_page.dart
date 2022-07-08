@@ -21,18 +21,25 @@ class UserDetailPage extends StatelessWidget {
             'label.pages.userDetail.title',
           )),
         ),
-        body: _builder(context),
+        body: LayoutBuilder(
+          builder: (context, constraints) => _builder(
+            context,
+            constraints,
+          ),
+        ),
       ),
     );
   }
 
-  Widget _builder(BuildContext context) {
+  Widget _builder(BuildContext context, BoxConstraints constraints) {
     return BlocConsumer<UserDetailPageCubit, UserDetailPageState>(
       listener: (context, state) {
         if (state.failure != null) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(state.failure!.message),
-          ));
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(
+              content: Text(state.failure!.message),
+            ));
         }
       },
       builder: (context, state) {

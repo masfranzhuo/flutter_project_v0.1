@@ -1,3 +1,3 @@
 class Pagination {
-  static const limit = 20;
+  static const limit = 10;
 }

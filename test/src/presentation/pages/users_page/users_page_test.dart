@@ -121,7 +121,7 @@ void main() {
       final button = find.byType(ElevatedButton);
       await tester.tap(button);
 
-      verify(() => mockUsersPageCubit.getUsers());
+      verify(() => mockUsersPageCubit.getUsers()).called(2);
     },
   );
 
@@ -147,7 +147,8 @@ void main() {
       await _setUpEnvironment(tester);
 
       verify(() =>
-          mockTranslatorService.translate(any(), 'error.NO_DATA_FAILURE'));
+              mockTranslatorService.translate(any(), 'error.NO_DATA_FAILURE'))
+          .called(1);
     },
   );
 
@@ -182,7 +183,7 @@ void main() {
       // finish the indicator hide animation
       await tester.pump(const Duration(seconds: 1));
 
-      verify(() => mockUsersPageCubit.getUsers(isReload: true));
+      verify(() => mockUsersPageCubit.getUsers(isReload: true)).called(1);
 
       handle.dispose();
     },

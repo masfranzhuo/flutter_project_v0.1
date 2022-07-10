@@ -91,7 +91,7 @@ void main() {
         findsOneWidget,
       );
 
-      verify(() => mockUserDetailPageCubit.getUser(id: user.id));
+      verify(() => mockUserDetailPageCubit.getUser(id: user.id)).called(1);
     },
   );
 

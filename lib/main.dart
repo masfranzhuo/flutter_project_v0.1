@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_i18n/loaders/namespace_file_translation_loader.dart';
@@ -26,9 +25,9 @@ Future<void> main() async {
       decodeStrategies: [YamlDecodeStrategy()],
     ),
     missingTranslationHandler: (key, locale) {
-      if (kDebugMode) {
-        print("--- Missing Key: $key, languageCode: ${locale?.languageCode}");
-      }
+      debugPrint(
+        '--- Missing Key: $key, languageCode: ${locale?.languageCode}',
+      );
     },
   );
   runApp(MainPage(flutterI18nDelegate: flutterI18nDelegate));

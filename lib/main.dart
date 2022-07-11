@@ -8,10 +8,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_project/core/config/env_config.dart';
 import 'package:flutter_project/src/presentation/pages/main_page.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Hive.initFlutter();
+  await Hive.openBox('box');
   configureDependencies(EnvConfig.environment);
   await dotenv.load(fileName: GetIt.I<BaseConfig>().envFileName);
 

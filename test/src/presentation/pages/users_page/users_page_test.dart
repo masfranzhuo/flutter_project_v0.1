@@ -111,7 +111,6 @@ void main() {
       whenListen(
         mockUsersPageCubit,
         Stream.fromIterable([
-          UsersPageState(),
           UsersPageState(users: users),
         ]),
       );
@@ -134,7 +133,6 @@ void main() {
       whenListen(
         mockUsersPageCubit,
         Stream.fromIterable([
-          UsersPageState(),
           UsersPageState(
             failure: const UnexpectedFailure(
               code: 'NO_DATA_FAILURE',
@@ -190,21 +188,20 @@ void main() {
   );
 
   testWidgets(
-    'should navigate to UserDetailPage, when tap at IconButton',
+    'should verify navigate to UserDetailPage, when tap at IconButton',
     (WidgetTester tester) async {
       final MockUserDetailPageCubit mockUserDetailPageCubit =
           MockUserDetailPageCubit();
       GetIt.I.registerLazySingleton<UserDetailPageCubit>(
         () => mockUserDetailPageCubit,
       );
-
-      when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(users: users),
-      );
       when(() => mockUserDetailPageCubit.state).thenReturn(
         UserDetailPageState(user: user),
       );
 
+      when(() => mockUsersPageCubit.state).thenReturn(
+        UsersPageState(users: users),
+      );
       await _setUpEnvironment(tester);
 
       final tapable = find.byKey(
@@ -213,9 +210,9 @@ void main() {
       await tester.tap(tapable);
       await tester.pumpAndSettle();
 
-      verify(() => mockObserver.didPush(any(), any()));
       expect(find.byType(UsersPage), findsNothing);
       expect(find.byType(UserDetailPage), findsOneWidget);
+      verify(() => mockObserver.didPush(any(), any()));
     },
   );
 }

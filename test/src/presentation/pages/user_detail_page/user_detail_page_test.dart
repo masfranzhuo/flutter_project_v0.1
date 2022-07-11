@@ -104,7 +104,6 @@ void main() {
       whenListen(
         mockUserDetailPageCubit,
         Stream.fromIterable([
-          UserDetailPageState(user: user),
           UserDetailPageState(
             failure: const UnexpectedFailure(message: 'any message'),
           ),

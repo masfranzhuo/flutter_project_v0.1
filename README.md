@@ -26,4 +26,4 @@ APP_ID = XXXXXX // get API key at https://dummyapi.io
 - Localization
 - Responsive
 - Dio as Http Service
-- Hive as Local Storage
+- Hive and sqflite as Local Storage

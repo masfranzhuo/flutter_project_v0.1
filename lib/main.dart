@@ -15,7 +15,7 @@ Future<void> main() async {
 
   await Hive.initFlutter();
   await Hive.openBox('box');
-  configureDependencies(EnvConfig.environment);
+  await configureDependencies(EnvConfig.environment);
   await dotenv.load(fileName: GetIt.I<BaseConfig>().envFileName);
 
   final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(

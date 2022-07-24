@@ -139,8 +139,9 @@ void main() {
             w is Column &&
             w.children[5] is Padding &&
             (w.children[5] as Padding).child is Text &&
-            ((w.children[5] as Padding).child as Text).data!.contains(
-                ': ${DateConfig.dateFormat.format(user.dateOfBirth!)}')),
+            ((w.children[5] as Padding).child as Text)
+                .data!
+                .contains(': ${DateConfig.dateFormat(user.dateOfBirth!)}')),
         findsOneWidget,
       );
 
@@ -149,8 +150,9 @@ void main() {
             w is Column &&
             w.children[6] is Padding &&
             (w.children[6] as Padding).child is Text &&
-            ((w.children[6] as Padding).child as Text).data!.contains(
-                ': ${DateConfig.dateFormat.format(user.registerDate!)}')),
+            ((w.children[6] as Padding).child as Text)
+                .data!
+                .contains(': ${DateConfig.dateFormat(user.registerDate!)}')),
         findsOneWidget,
       );
 

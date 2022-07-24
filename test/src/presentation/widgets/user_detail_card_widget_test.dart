@@ -7,6 +7,7 @@ import 'package:flutter_project/src/presentation/widgets/user_detail_card_widget
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../mock_helpers.dart';
@@ -17,6 +18,7 @@ void main() {
 
   setUpAll(() {
     HttpOverrides.global = null;
+    initializeDateFormatting('en_US');
   });
 
   setUp(() {

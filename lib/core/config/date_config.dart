@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 class DateConfig {
-  static String dateFormat(DateTime date, [String locale = 'US']) =>
+  static String dateFormat(DateTime date, [String locale = 'en_US']) =>
       DateFormat('dd MMMM yyyy', locale).format(date);
 
   static DateTime? dateTimeFromJson(String? date) =>

@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class HiveService {
-  void put(String key, String value);
+  void put(String key, dynamic value);
   String get(String key);
   Future<void> delete(String key);
   Future<int> clear();
@@ -30,7 +30,7 @@ class HiveServiceImpl implements HiveService {
   }
 
   @override
-  void put(String key, String value) {
+  void put(String key, dynamic value) {
     hive.put(key, value);
   }
 }

@@ -13,7 +13,7 @@ abstract class RegisterModule {
   @preResolve
   Future<Box<dynamic>> get hive async => Hive.box('box');
 
-  // TODO: sqflite only works for mobile device
+  // TODO: sqflite only works for mobile device || refactor Sqflite
   // @preResolve
   // Future<Database> get database async => await openDatabase(
   //       join(await getDatabasesPath(), 'database.db'),

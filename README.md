@@ -27,3 +27,4 @@ APP_ID = XXXXXX // get API key at https://dummyapi.io
 - Responsive
 - Dio as Http Service
 - Hive and sqflite as Local Storage
+- Device Preview to preview from any device

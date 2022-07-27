@@ -34,5 +34,11 @@ Future<void> main() async {
       );
     },
   );
-  runApp(MainPage(flutterI18nDelegate: flutterI18nDelegate));
+
+  runApp(
+    DevicePreview(
+      enabled: GetIt.I<BaseConfig>().showDebugInfo,
+      builder: (context) => MainPage(flutterI18nDelegate: flutterI18nDelegate),
+    ),
+  );
 }

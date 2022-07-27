@@ -1,5 +1,5 @@
 ![Test](https://github.com/masfranzhuo/flutter_project/workflows/Test/badge.svg)
-[![codecov](https://codecov.io/gh/masfranzhuo/flutter_project/branch/development/graph/badge.svg?token=ED78PFGNFG)](https://codecov.io/gh/masfranzhuo/flutter_project)
+[![codecov](https://codecov.io/gh/masfranzhuo/flutter_project/branch/main/graph/badge.svg?token=ED78PFGNFG)](https://codecov.io/gh/masfranzhuo/flutter_project)
 
 # flutter_project
 
@@ -25,4 +25,6 @@ APP_ID = XXXXXX // get API key at https://dummyapi.io
 - Environment
 - Localization
 - Responsive
-- Http Service
+- Dio as Http Service
+- Hive and sqflite as Local Storage
+- Device Preview to preview from any device

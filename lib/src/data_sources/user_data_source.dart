@@ -1,4 +1,5 @@
-import 'package:flutter_project/core/utils/failure.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_project/core/services/http_client.dart';
 import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/src/entities/user.dart';
@@ -27,6 +28,9 @@ class UserDataSourceImpl extends UserDataSource {
       final result = await client.get(
         path: 'user',
         queryParameters: {'limit': limit, 'page': pages},
+        options: Options(
+          headers: <String, dynamic>{'app-id': dotenv.env['APP_ID']},
+        ),
       );
 
       final data = List<dynamic>.from(result.data['data'] ?? []).toList();
@@ -35,18 +39,23 @@ class UserDataSourceImpl extends UserDataSource {
           .map((item) => User.fromJson(Map<String, dynamic>.from(item)))
           .toList();
     } on Exception catch (e) {
-      throw UnexpectedFailure(message: e.toString());
+      throw Exception(e.toString());
     }
   }
 
   @override
   Future<User> getUser({required String id}) async {
     try {
-      final result = await client.get(path: 'user/$id');
+      final result = await client.get(
+        path: 'user/$id',
+        options: Options(
+          headers: <String, dynamic>{'app-id': dotenv.env['APP_ID']},
+        ),
+      );
 
       return User.fromJson(result.data as Map<String, dynamic>);
     } on Exception catch (e) {
-      throw UnexpectedFailure(message: e.toString());
+      throw Exception(e.toString());
     }
   }
 }

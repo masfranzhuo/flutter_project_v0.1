@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/src/entities/user.dart';
 import 'package:flutter_project/src/use_cases/get_users.dart';

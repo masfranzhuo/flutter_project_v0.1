@@ -46,6 +46,19 @@ void main() {
       verify(mockUserDataSource.getUsers(page: 1, limit: 10));
     });
 
+    test('should return UnexpectedFailure(), when throw failure', () async {
+      when(mockUserDataSource.getUsers(
+        page: anyNamed('page'),
+        limit: anyNamed('limit'),
+      )).thenThrow(const UnexpectedFailure());
+
+      final result = await repository.getUsers(page: 1, limit: 10);
+
+      expect((result as Left).value, isA<UnexpectedFailure>());
+
+      verify(mockUserDataSource.getUsers(page: 1, limit: 10));
+    });
+
     test('should return list of users', () async {
       when(mockUserDataSource.getUsers(
         page: anyNamed('page'),

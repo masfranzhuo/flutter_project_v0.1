@@ -78,7 +78,7 @@ void main() {
       },
     );
     blocTest(
-      'should emit users and pages = 1, when get users for the first time',
+      'should emit users and page = 1, when get users for the first time',
       build: () {
         when(mockGetUsers(
           page: anyNamed('page'),
@@ -105,7 +105,7 @@ void main() {
       },
     );
     blocTest(
-      'should emit users and pages = 2, when load more users',
+      'should emit users and page = 2, when load more users',
       build: () {
         when(mockGetUsers(
           page: anyNamed('page'),
@@ -134,7 +134,7 @@ void main() {
       },
     );
     blocTest(
-      'should emit users and pages = 1, when isReload is true',
+      'should emit users and page = 1, when isReload is true',
       build: () {
         when(mockGetUsers(
           page: anyNamed('page'),

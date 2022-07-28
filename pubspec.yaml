@@ -27,7 +27,6 @@ dependencies:
   injectable: ^1.5.3
   intl: ^0.17.0
   json_annotation: ^4.6.0
-  mocktail: ^0.3.0
   path: ^1.8.0
   sqflite: ^2.0.3
 
@@ -41,6 +40,7 @@ dev_dependencies:
   injectable_generator: ^1.5.4
   json_serializable: ^6.3.1
   mockito: ^5.2.0
+  mocktail: ^0.3.0
 
 flutter:
   uses-material-design: true

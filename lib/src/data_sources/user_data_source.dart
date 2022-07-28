@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_project/core/services/http_client.dart';
 import 'package:flutter_project/core/config/general_config.dart';
+import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/src/entities/user.dart';
 import 'package:injectable/injectable.dart';
 
@@ -14,7 +15,7 @@ abstract class UserDataSource {
 }
 
 @LazySingleton(as: UserDataSource)
-class UserDataSourceImpl extends UserDataSource {
+class UserDataSourceImpl implements UserDataSource {
   final HttpClientService client;
 
   UserDataSourceImpl({required this.client});
@@ -38,6 +39,8 @@ class UserDataSourceImpl extends UserDataSource {
       return List<Map<String, dynamic>>.from(data)
           .map((item) => User.fromJson(Map<String, dynamic>.from(item)))
           .toList();
+    } on InternetConnectionFailure {
+      rethrow;
     } on Exception catch (e) {
       throw Exception(e.toString());
     }
@@ -54,6 +57,8 @@ class UserDataSourceImpl extends UserDataSource {
       );
 
       return User.fromJson(result.data as Map<String, dynamic>);
+    } on InternetConnectionFailure {
+      rethrow;
     } on Exception catch (e) {
       throw Exception(e.toString());
     }

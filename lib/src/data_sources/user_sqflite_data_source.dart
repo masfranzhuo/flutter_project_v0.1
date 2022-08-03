@@ -1,4 +1,5 @@
 import 'package:flutter_project/core/services/sqflite.dart';
+import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/src/entities/user.dart';
 import 'package:injectable/injectable.dart';
 
@@ -12,7 +13,7 @@ abstract class UserSqfliteDataSource {
 }
 
 @LazySingleton(as: UserSqfliteDataSource)
-class UserLocalDataSourceImpl implements UserSqfliteDataSource {
+class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
   final SqfliteService sqfliteService;
   final String _table = 'User';
   final List<String> _column = [
@@ -29,56 +30,80 @@ class UserLocalDataSourceImpl implements UserSqfliteDataSource {
     'location',
   ];
 
-  UserLocalDataSourceImpl({required this.sqfliteService});
+  UserSqfliteDataSourceImpl({required this.sqfliteService});
 
   @override
   Future<User> getUser({required String id}) async {
-    final result = await sqfliteService.get(
-      table: _table,
-      id: id,
-      columns: _column,
-    );
+    try {
+      final result = await sqfliteService.get(
+        table: _table,
+        id: id,
+        columns: _column,
+      );
 
-    return User.fromJson(result as Map<String, dynamic>);
+      return User.fromJson(result as Map<String, dynamic>);
+    } on Exception catch (e) {
+      throw LocalStorageFailure(message: e.toString());
+    }
   }
 
   @override
   Future<List<User>> getUsers() async {
-    final result = await sqfliteService.getList(
-      table: _table,
-      columns: _column,
-    );
+    try {
+      final result = await sqfliteService.getList(
+        table: _table,
+        columns: _column,
+      );
 
-    final data = List<dynamic>.from(result ?? []).toList();
+      final data = List<dynamic>.from(result ?? []).toList();
 
-    return List<Map<String, dynamic>>.from(data)
-        .map((item) => User.fromJson(Map<String, dynamic>.from(item)))
-        .toList();
+      return List<Map<String, dynamic>>.from(data)
+          .map((item) => User.fromJson(Map<String, dynamic>.from(item)))
+          .toList();
+    } on Exception catch (e) {
+      throw LocalStorageFailure(message: e.toString());
+    }
   }
 
   @override
   Future<void> setUser({required User user}) async {
-    await sqfliteService.insert(table: _table, map: user.toJson());
-    return;
+    try {
+      await sqfliteService.insert(table: _table, map: user.toJson());
+      return;
+    } on Exception catch (e) {
+      throw LocalStorageFailure(message: e.toString());
+    }
   }
 
   @override
   Future<void> setUsers({required List<User> users}) async {
-    final List<Map<String, dynamic>> maps =
-        users.map((e) => e.toJson()).toList();
-    await sqfliteService.insertBulk(table: _table, maps: maps);
-    return;
+    try {
+      final List<Map<String, dynamic>> maps =
+          users.map((e) => e.toJson()).toList();
+      await sqfliteService.insertBulk(table: _table, maps: maps);
+      return;
+    } on Exception catch (e) {
+      throw LocalStorageFailure(message: e.toString());
+    }
   }
 
   @override
   Future<void> deleteUser({required String id}) async {
-    await sqfliteService.delete(table: _table, id: id);
-    return;
+    try {
+      await sqfliteService.delete(table: _table, id: id);
+      return;
+    } on Exception catch (e) {
+      throw LocalStorageFailure(message: e.toString());
+    }
   }
 
   @override
   Future<void> deleteAllUser() async {
-    await sqfliteService.deleteAll(table: _table);
-    return;
+    try {
+      await sqfliteService.deleteAll(table: _table);
+      return;
+    } on Exception catch (e) {
+      throw LocalStorageFailure(message: e.toString());
+    }
   }
 }

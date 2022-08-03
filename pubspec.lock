@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "43.0.0"
   analyzer:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
@@ -183,6 +183,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.3"
+  dartx:
+    dependency: transitive
+    description:
+      name: dartx
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   dartz:
     dependency: "direct main"
     description:
@@ -218,6 +225,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.6"
+  equatable:
+    dependency: "direct main"
+    description:
+      name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   fake_async:
     dependency: transitive
     description:
@@ -231,7 +245,7 @@ packages:
       name: ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "1.2.1"
   file:
     dependency: transitive
     description:
@@ -307,7 +321,7 @@ packages:
       name: freezed
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0+1"
+    version: "2.0.4"
   freezed_annotation:
     dependency: "direct main"
     description:
@@ -391,7 +405,7 @@ packages:
       name: injectable_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.4"
+    version: "1.5.3"
   intl:
     dependency: "direct main"
     description:
@@ -406,6 +420,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  isar:
+    dependency: "direct main"
+    description:
+      name: isar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.5.0"
+  isar_flutter_libs:
+    dependency: "direct main"
+    description:
+      name: isar_flutter_libs
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.5.0"
+  isar_generator:
+    dependency: "direct dev"
+    description:
+      name: isar_generator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.5.0"
   js:
     dependency: transitive
     description:
@@ -512,7 +547,7 @@ packages:
     source: hosted
     version: "1.8.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -559,7 +594,7 @@ packages:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.0.7"
   petitparser:
     dependency: transitive
     description:
@@ -817,6 +852,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.13"
+  time:
+    dependency: transitive
+    description:
+      name: time
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   timing:
     dependency: transitive
     description:
@@ -879,7 +921,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.7.0"
+    version: "2.6.1"
   xdg_directories:
     dependency: transitive
     description:

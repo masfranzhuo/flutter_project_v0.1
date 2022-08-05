@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/src/entities/location_isar.dart';
 import 'package:flutter_project/src/entities/user_isar.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 @module
 abstract class RegisterModule {
@@ -24,13 +27,14 @@ abstract class RegisterModule {
         inspector: true,
       );
 
-  // TODO: sqflite only works for mobile device || refactor Sqflite
-  // @preResolve
-  // Future<Database> get database async => await openDatabase(
-  //       join(await getDatabasesPath(), 'database.db'),
-  //       version: 1,
-  //       onCreate: (Database database, int version) async {
-  //         await database.execute(DatabaseSql.createTableUser);
-  //       },
-  //     );
+  /// sqflite only works for mobile device currently
+  ///
+  @preResolve
+  Future<Database> get database async => await openDatabase(
+        join(await getDatabasesPath(), 'database.db'),
+        version: 1,
+        onCreate: (Database database, int version) async {
+          await database.execute(DatabaseSql.createTableUser);
+        },
+      );
 }

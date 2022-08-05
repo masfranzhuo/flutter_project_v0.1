@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/src/data_sources/user_data_source.dart';
 import 'package:flutter_project/src/data_sources/user_local_data_source.dart';
+import 'package:flutter_project/src/data_sources/user_sqflite_data_source.dart';
 import 'package:flutter_project/src/repositories/user_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -10,18 +11,21 @@ import 'package:mockito/mockito.dart';
 import '../entities/entity_helpers.dart';
 import 'user_repository_test.mocks.dart';
 
-@GenerateMocks([UserDataSource, UserLocalDataSource])
+@GenerateMocks([UserDataSource, UserLocalDataSource, UserSqfliteDataSource])
 void main() {
   late UserRepositoryImpl repository;
   late MockUserDataSource mockUserDataSource;
   late MockUserLocalDataSource mockUserLocalDataSource;
+  late MockUserSqfliteDataSource mockUserSqfliteDataSource;
 
   setUp(() {
     mockUserDataSource = MockUserDataSource();
     mockUserLocalDataSource = MockUserLocalDataSource();
+    mockUserSqfliteDataSource = MockUserSqfliteDataSource();
     repository = UserRepositoryImpl(
       dataSource: mockUserDataSource,
       localDataSource: mockUserLocalDataSource,
+      sqfliteDataSource: mockUserSqfliteDataSource,
     );
   });
 

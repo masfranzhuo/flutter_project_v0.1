@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/core/services/sqflite.dart';
 import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/src/entities/user.dart';
@@ -6,7 +9,7 @@ import 'package:injectable/injectable.dart';
 abstract class UserSqfliteDataSource {
   Future<void> setUsers({required List<User> users});
   Future<void> setUser({required User user});
-  Future<List<User>> getUsers();
+  Future<List<User>> getUsers({int? page, int limit = Pagination.limit});
   Future<User> getUser({required String id});
   Future<void> deleteUser({required String id});
   Future<void> deleteAllUser();
@@ -28,6 +31,15 @@ class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
     'dateOfBirth',
     'registerDate',
     'location',
+
+    /// [https://github.com/tekartik/sqflite/blob/master/sqflite/doc/supported_types.md#supported-types]
+    /// there are 2 solutions working with nested model:
+    /// 1. flattened solution could make the properties queried,
+    /// but need to create another proper model
+    /// 2.  encoded nested maps and lists as json, declaring the column as a [String] solution,
+    /// could not be queried, but does not need create another model,
+    /// just need to tweak some code manually when save or get the nested model
+    ///
   ];
 
   UserSqfliteDataSourceImpl({required this.sqfliteService});
@@ -41,23 +53,37 @@ class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
         columns: _column,
       );
 
-      return User.fromJson(result as Map<String, dynamic>);
+      /// usually database return immutable/unmodifiable data, so you have to clone it before changing
+      ///
+      final map = Map.of(result as Map<String, dynamic>);
+      if (map['location'] != null) {
+        /// decode for nested model and replace in map
+        ///
+        map['location'] = jsonDecode(map['location']);
+      }
+
+      return User.fromJson(map);
     } on Exception catch (e) {
       throw LocalStorageFailure(message: e.toString());
     }
   }
 
   @override
-  Future<List<User>> getUsers() async {
+  Future<List<User>> getUsers({int? page, int limit = Pagination.limit}) async {
     try {
+      int? offset;
+      if (page != null) {
+        offset = (limit * page) - limit;
+      }
+
       final result = await sqfliteService.getList(
         table: _table,
         columns: _column,
+        limit: limit,
+        offset: offset,
       );
 
-      final data = List<dynamic>.from(result ?? []).toList();
-
-      return List<Map<String, dynamic>>.from(data)
+      return (result ?? [])
           .map((item) => User.fromJson(Map<String, dynamic>.from(item)))
           .toList();
     } on Exception catch (e) {
@@ -68,7 +94,14 @@ class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
   @override
   Future<void> setUser({required User user}) async {
     try {
-      await sqfliteService.insert(table: _table, map: user.toJson());
+      final map = user.toJson();
+      if (user.location != null) {
+        /// encode to proper string before save to sqflite
+        ///
+        map['location'] = jsonEncode(user.location?.toJson());
+      }
+
+      await sqfliteService.insert(table: _table, map: map);
       return;
     } on Exception catch (e) {
       throw LocalStorageFailure(message: e.toString());

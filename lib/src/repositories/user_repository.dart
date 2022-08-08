@@ -3,7 +3,6 @@ import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/src/data_sources/user_data_source.dart';
 import 'package:flutter_project/src/data_sources/user_local_data_source.dart';
-import 'package:flutter_project/src/data_sources/user_sqflite_data_source.dart';
 import 'package:flutter_project/src/entities/user.dart';
 import 'package:injectable/injectable.dart';
 
@@ -19,12 +18,12 @@ abstract class UserRepository {
 class UserRepositoryImpl implements UserRepository {
   final UserDataSource dataSource;
   final UserLocalDataSource localDataSource;
-  final UserSqfliteDataSource sqfliteDataSource;
+  // final UserSqfliteDataSource sqfliteDataSource;
 
   UserRepositoryImpl({
     required this.dataSource,
     required this.localDataSource,
-    required this.sqfliteDataSource,
+    // required this.sqfliteDataSource,
   });
 
   @override
@@ -35,7 +34,7 @@ class UserRepositoryImpl implements UserRepository {
     try {
       final result = await dataSource.getUsers(page: page, limit: limit);
       await localDataSource.setUsers(users: result);
-      await sqfliteDataSource.setUsers(users: result);
+      // await sqfliteDataSource.setUsers(users: result);
 
       return Right(result);
     } on InternetConnectionFailure catch (failure) {

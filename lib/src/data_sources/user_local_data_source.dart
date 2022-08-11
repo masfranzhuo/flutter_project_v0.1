@@ -1,5 +1,6 @@
 import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/core/utils/failure.dart';
+import 'package:flutter_project/src/entities/location_isar.dart';
 import 'package:flutter_project/src/entities/user.dart';
 import 'package:flutter_project/src/entities/user_isar.dart';
 import 'package:injectable/injectable.dart';
@@ -23,11 +24,12 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   @override
   Future<void> deleteAllUser() async {
     try {
-      await isar.writeTxn((isar) async {
+      await isar.writeTxn(() async {
         final idStrings =
             await isar.userIsars.where().idStringProperty().findAll();
 
         await isar.userIsars.deleteAllByIdString(idStrings);
+        await isar.locationIsars.deleteAllByIdString(idStrings);
       });
       return;
     } on Exception catch (e) {
@@ -38,8 +40,9 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   @override
   Future<void> deleteUser({required String id}) async {
     try {
-      await isar.writeTxn((isar) async {
+      await isar.writeTxn(() async {
         await isar.userIsars.deleteByIdString(id);
+        await isar.locationIsars.deleteByIdString(id);
       });
       return;
     } on Exception catch (e) {
@@ -88,12 +91,10 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     try {
       final userIsar = UserIsar.fromUser(user);
 
-      await isar.writeTxn((isar) async {
-        await isar.userIsars.put(
-          userIsar,
-          replaceOnConflict: true,
-          saveLinks: true,
-        );
+      await isar.writeTxn(() async {
+        await isar.userIsars.putByIdString(userIsar);
+        await isar.locationIsars.put(userIsar.location.value!);
+        await userIsar.location.save();
       });
       return;
     } on Exception catch (e) {
@@ -104,10 +105,10 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   @override
   Future<void> setUsers({required List<User> users}) async {
     try {
-      await isar.writeTxn((isar) async {
+      await isar.writeTxn(() async {
         for (User user in users) {
           final userIsar = UserIsar.fromUser(user);
-          await isar.userIsars.put(userIsar, replaceOnConflict: true);
+          await isar.userIsars.putByIdString(userIsar);
         }
       });
       return;

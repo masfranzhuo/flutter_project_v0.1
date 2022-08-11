@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "43.0.0"
   analyzer:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: analyzer
       url: "https://pub.dartlang.org"
@@ -245,7 +245,7 @@ packages:
       name: ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.1"
+    version: "2.0.1"
   file:
     dependency: transitive
     description:
@@ -405,7 +405,7 @@ packages:
       name: injectable_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.5.3"
+    version: "1.5.4"
   intl:
     dependency: "direct main"
     description:
@@ -426,21 +426,21 @@ packages:
       name: isar
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "3.0.0-dev.8"
   isar_flutter_libs:
     dependency: "direct main"
     description:
       name: isar_flutter_libs
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "3.0.0-dev.8"
   isar_generator:
     dependency: "direct dev"
     description:
       name: isar_generator
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.5.0"
+    version: "3.0.0-dev.8"
   js:
     dependency: transitive
     description:
@@ -594,7 +594,7 @@ packages:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.7"
+    version: "2.1.2"
   petitparser:
     dependency: transitive
     description:
@@ -921,7 +921,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.6.1"
+    version: "2.7.0"
   xdg_directories:
     dependency: transitive
     description:

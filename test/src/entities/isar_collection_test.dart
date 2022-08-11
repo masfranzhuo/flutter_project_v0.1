@@ -9,32 +9,36 @@ void main() {
   late UserIsar userIsar;
 
   setUp(() {
-    locationIsar = LocationIsar(
-      street: user.location!.street,
-      city: user.location!.city,
-      state: user.location!.state,
-      country: user.location!.country,
-      timezone: user.location!.timezone,
-    );
+    locationIsar = LocationIsar()
+      ..idString = user.id
+      ..street = user.location!.street
+      ..city = user.location!.city
+      ..state = user.location!.state
+      ..country = user.location!.country
+      ..timezone = user.location!.timezone;
 
-    userIsar = UserIsar(
-      idString: user.id,
-      title: user.title,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      picture: user.picture,
-      dateOfBirth: user.dateOfBirth,
-      registerDate: user.registerDate,
-      gender: user.gender,
-      email: user.email,
-      phone: user.phone,
-    )..location.value = locationIsar;
+    userIsar = UserIsar()
+      ..idString = user.id
+      ..title = user.title
+      ..firstName = user.firstName
+      ..lastName = user.lastName
+      ..picture = user.picture
+      ..dateOfBirth = user.dateOfBirth
+      ..registerDate = user.registerDate
+      ..gender = user.gender
+      ..email = user.email
+      ..phone = user.phone
+      ..location.value = locationIsar;
   });
 
   group('LocationIsar', () {
     test('fromLocation', () {
       var result = LocationIsar.fromLocation(user.location!);
-      expect(result, locationIsar);
+      expect(result.street, locationIsar.street);
+      expect(result.city, locationIsar.city);
+      expect(result.state, locationIsar.state);
+      expect(result.country, locationIsar.country);
+      expect(result.timezone, locationIsar.timezone);
     });
 
     test('toLocation', () {
@@ -46,8 +50,11 @@ void main() {
   group('UserIsar', () {
     test('fromUser', () {
       var result = UserIsar.fromUser(user);
-      expect(result, userIsar);
-      expect(result.location.value, userIsar.location.value);
+      expect(result.idString, userIsar.idString);
+      expect(
+        result.location.value?.idString,
+        userIsar.location.value?.idString,
+      );
     });
 
     test('toUser', () {

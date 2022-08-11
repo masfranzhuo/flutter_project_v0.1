@@ -19,7 +19,7 @@ abstract class RegisterModule {
 
   @preResolve
   Future<Isar> get isar async => await Isar.open(
-        schemas: [LocationIsarSchema, UserIsarSchema],
+        [LocationIsarSchema, UserIsarSchema],
         directory: (await getApplicationSupportDirectory()).path,
         inspector: true,
       );

@@ -1,37 +1,28 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_project/src/entities/location.dart';
 import 'package:isar/isar.dart';
 
 part 'location_isar.g.dart';
 
 @Collection()
-class LocationIsar extends Equatable {
-  final int id = Isar.autoIncrement;
-  final String street;
-  final String city;
-  final String state;
-  final String country;
-  final String timezone;
+class LocationIsar {
+  Id? id;
+  @Index(unique: true, replace: true)
+  late String idString;
+  late String street;
+  late String city;
+  late String state;
+  late String country;
+  late String timezone;
 
-  LocationIsar({
-    required this.street,
-    required this.city,
-    required this.state,
-    required this.country,
-    required this.timezone,
-  });
-
-  @override
-  List<Object> get props => [id, street, city, state, country, timezone];
+  LocationIsar();
 
   factory LocationIsar.fromLocation(Location location) {
-    final locationIsar = LocationIsar(
-      street: location.street,
-      city: location.city,
-      state: location.state,
-      country: location.country,
-      timezone: location.timezone,
-    );
+    final locationIsar = LocationIsar()
+      ..street = location.street
+      ..city = location.city
+      ..state = location.state
+      ..country = location.country
+      ..timezone = location.timezone;
     return locationIsar;
   }
 

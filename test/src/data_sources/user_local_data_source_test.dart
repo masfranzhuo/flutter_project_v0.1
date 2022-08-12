@@ -1,263 +1,298 @@
-// TODO: test local data source and image network error test
-void main() {}
-// import 'package:dartz/dartz.dart';
-// import 'package:flutter_project/core/config/general_config.dart';
-// import 'package:flutter_project/core/utils/failure.dart';
-// import 'package:flutter_project/src/data_sources/user_local_data_source.dart';
-// import 'package:flutter_project/src/entities/location_isar.dart';
-// import 'package:flutter_project/src/entities/user.dart';
-// import 'package:flutter_project/src/entities/user_isar.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:isar/isar.dart';
-// import 'package:mockito/annotations.dart';
-// import 'package:mockito/mockito.dart';
+import 'package:dartz/dartz.dart';
+import 'package:flutter_project/core/config/general_config.dart';
+import 'package:flutter_project/core/utils/failure.dart';
+import 'package:flutter_project/src/data_sources/user_local_data_source.dart';
+import 'package:flutter_project/src/entities/location_isar.dart';
+import 'package:flutter_project/src/entities/user.dart';
+import 'package:flutter_project/src/entities/user_isar.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:isar/isar.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:path_provider/path_provider.dart';
 
-// import '../entities/entity_helpers.dart';
-// import 'user_local_data_source_test.mocks.dart';
+import '../entities/entity_helpers.dart';
+import '../entities/isar_entity_helpers.dart';
+import 'user_local_data_source_test.mocks.dart';
 
-// @GenerateMocks([
-//   UserIsar,
-//   User,
-// ], customMocks: [
-//   MockSpec<Isar>(
-//     unsupportedMembers: {#txnSync, #writeTxnSync},
-//     returnNullOnMissingStub: true,
-//   ),
-//   MockSpec<IsarCollection<UserIsar>>(),
-//   MockSpec<IsarLink<LocationIsar>>(),
-//   MockSpec<QueryBuilder<UserIsar, UserIsar, QWhere>>(
-//     as: #MockQueryBuilderWhere,
-//     returnNullOnMissingStub: true,
-//   ),
-//   MockSpec<QueryBuilder<UserIsar, UserIsar, QAfterOffset>>(
-//     as: #MockQueryBuilderOffset,
-//     returnNullOnMissingStub: true,
-//   ),
-//   MockSpec<QueryBuilder<UserIsar, UserIsar, QAfterLimit>>(
-//     as: #MockQueryBuilderLimit,
-//     returnNullOnMissingStub: true,
-//   ),
-//   MockSpec<QueryBuilder<UserIsar, String, QQueryOperations>>(
-//     as: #MockQueryBuilderOperations,
-//     returnNullOnMissingStub: true,
-//   ),
-// ])
-// void main() {
-//   late UserLocalDataSourceImpl localDataSource;
-//   late MockIsar mockIsar;
+@GenerateMocks([
+  UserIsar,
+  User,
+], customMocks: [
+  MockSpec<Isar>(
+    unsupportedMembers: {#txnSync, #writeTxnSync},
+    returnNullOnMissingStub: true,
+  ),
+  MockSpec<IsarCollection<UserIsar>>(
+    returnNullOnMissingStub: true,
+  ),
+  MockSpec<IsarLink<LocationIsar>>(
+    returnNullOnMissingStub: true,
+  ),
+])
+void main() {
+  late UserLocalDataSourceImpl localDataSourceWithMock;
+  late UserLocalDataSourceImpl localDataSource;
+  late Isar isar;
+  late MockIsar mockIsar;
 
-//   late MockIsarCollection mockIsarCollectionUser;
-//   late MockIsarLink mockIsarLinkLocation;
+  late MockIsarCollection mockIsarCollectionUser;
+  late MockIsarLink mockIsarLinkLocation;
 
-//   late MockQueryBuilderWhere mockQueryBuilderWhere;
-//   late MockQueryBuilderOffset mockQueryBuilderOffset;
-//   late MockQueryBuilderLimit mockQueryBuilderLimit;
-//   late MockQueryBuilderOperations mockQueryBuilderOperations;
+  late MockUserIsar mockUserIsar;
+  late MockUser mockUser;
 
-//   late MockUserIsar mockUserIsar;
-//   late MockUser mockUser;
-//   late List<MockUserIsar> mockUserIsars;
-//   late List<MockUser> mockUsers;
+  setUp(() async {
+    await Isar.initializeIsarCore(download: true);
+    isar = await Isar.open(
+      [LocationIsarSchema, UserIsarSchema],
+      directory: (await getApplicationSupportDirectory()).path,
+    );
 
-//   setUp(() {
-//     mockIsar = MockIsar();
+    mockIsar = MockIsar();
 
-//     mockIsarCollectionUser = MockIsarCollection();
-//     mockIsarLinkLocation = MockIsarLink();
+    mockIsarCollectionUser = MockIsarCollection();
+    mockIsarLinkLocation = MockIsarLink();
 
-//     mockQueryBuilderWhere = MockQueryBuilderWhere();
-//     mockQueryBuilderOffset = MockQueryBuilderOffset();
-//     mockQueryBuilderLimit = MockQueryBuilderLimit();
-//     mockQueryBuilderOperations = MockQueryBuilderOperations();
+    mockUserIsar = MockUserIsar();
+    mockUser = MockUser();
 
-//     mockUserIsar = MockUserIsar();
-//     mockUser = MockUser();
-//     mockUserIsars = [mockUserIsar];
-//     mockUsers = [mockUser];
+    localDataSourceWithMock = UserLocalDataSourceImpl(isar: mockIsar);
+    localDataSource = UserLocalDataSourceImpl(isar: isar);
+  });
 
-//     localDataSource = UserLocalDataSourceImpl(isar: mockIsar);
-//   });
+  tearDown(() => isar.close(deleteFromDisk: true));
 
-//   group('deleteAllUser', () {
-//     test('should throw LocalStorageFailure()', () async {
-//       /*
-//       */
-//     });
-//     test('should call deleteAllByIdString', () async {
-//       when(mockIsar.getCollection<UserIsar>()).thenReturn(
-//         mockIsarCollectionUser,
-//       );
-//       when(mockIsarCollectionUser.where()).thenReturn(mockQueryBuilderWhere);
-//       when(mockQueryBuilderWhere.idStringProperty())
-//           .thenReturn(mockQueryBuilderOperations);
-//       when(mockQueryBuilderOperations.findAll()).thenAnswer(
-//         (_) async => [],
-//       );
-//       when(mockIsarCollectionUser.deleteAllByIdString([])).thenAnswer(
-//         (_) async => 1,
-//       );
+  group('deleteAllUser', () {
+    test('should throw LocalStorageFailure()', () async {
+      when(mockIsar.writeTxn(any)).thenThrow(Exception());
 
-//       await localDataSource.deleteAllUser();
+      expect(
+        () async => await localDataSourceWithMock.deleteAllUser(),
+        throwsA(isA<LocalStorageFailure>()),
+      );
 
-//       verifyInOrder([
-//         mockIsar.getCollection<UserIsar>(),
-//         mockIsarCollectionUser.where(),
-//         mockQueryBuilderWhere.idStringProperty(),
-//         mockQueryBuilderLimit.findAll(),
-//         mockIsarCollectionUser.deleteAllByIdString([]),
-//       ]);
-//     });
-//   });
+      verify(mockIsar.writeTxn((any)));
+    });
 
-//   group('deleteUser', () {
-//     test('should throw LocalStorageFailure()', () async {
-//       /*
-//       */
-//     });
-//     test('should call deleteByIdString', () async {
-//       when(mockIsar.getCollection<UserIsar>()).thenReturn(
-//         mockIsarCollectionUser,
-//       );
-//       when(mockIsarCollectionUser.deleteByIdString('anyId')).thenAnswer(
-//         (_) async => true,
-//       );
+    test('should return 1, when delete data exist', () async {
+      await localDataSource.deleteAllUser();
 
-//       await localDataSource.deleteAllUser();
+      final result = await isar.writeTxn(
+        () async {
+          final UserIsar tempUserIsar = UserIsar.fromUser(user);
+          await isar.userIsars.putByIdString(tempUserIsar);
 
-//       verifyInOrder([
-//         mockIsar.getCollection<UserIsar>(),
-//         mockIsarCollectionUser.deleteByIdString('anyId'),
-//       ]);
-//     });
-//   });
+          final idStrings =
+              await isar.userIsars.where().idStringProperty().findAll();
+          return await isar.userIsars.deleteAllByIdString(idStrings);
+        },
+      );
+      expect(result, 1);
+    });
 
-//   group('getUser', () {
-//     test('should throw LocalStorageFailure()', () async {
-//       when(mockIsar.getCollection<UserIsar>()).thenReturn(
-//         mockIsarCollectionUser,
-//       );
-//       when(mockIsarCollectionUser.getByIdString('anyId')).thenThrow(
-//         Exception(),
-//       );
+    test('should return 0, when delete data not exist', () async {
+      await localDataSource.deleteAllUser();
 
-//       expect(
-//         () async => await localDataSource.getUser(id: 'anyId'),
-//         throwsA(isA<LocalStorageFailure>()),
-//       );
+      final result = await isar.writeTxn(
+        () async {
+          return await isar.userIsars.deleteAllByIdString(['anyId']);
+        },
+      );
+      expect(result, 0);
+    });
+  });
 
-//       verifyInOrder([
-//         mockIsar.getCollection<UserIsar>(),
-//         mockIsarCollectionUser.getByIdString('anyId'),
-//       ]);
-//     });
-//     test('should return user', () async {
-//       when(mockIsar.getCollection<UserIsar>()).thenReturn(
-//         mockIsarCollectionUser,
-//       );
-//       when(mockIsarCollectionUser.getByIdString('anyId')).thenAnswer(
-//         (_) async => mockUserIsar,
-//       );
-//       when(mockUserIsar.location).thenReturn(mockIsarLinkLocation);
-//       when(mockIsarLinkLocation.load()).thenAnswer((_) async => unit);
-//       when(mockUserIsar.toUser()).thenReturn(mockUser);
+  group('deleteUser', () {
+    test('should throw LocalStorageFailure()', () async {
+      when(mockIsar.writeTxn(any)).thenThrow(Exception());
 
-//       final result = await localDataSource.getUser(id: 'anyId');
+      expect(
+        () async => await localDataSourceWithMock.deleteUser(id: 'anyId'),
+        throwsA(isA<LocalStorageFailure>()),
+      );
 
-//       expect(result, mockUser);
+      verify(mockIsar.writeTxn((any)));
+    });
 
-//       verifyInOrder([
-//         mockIsar.getCollection<UserIsar>(),
-//         mockIsarCollectionUser.getByIdString('anyId'),
-//         mockUserIsar.location,
-//         mockIsarLinkLocation.load(),
-//         mockUserIsar.toUser(),
-//       ]);
-//     });
-//   });
+    test('should return true, when delete data exist', () async {
+      await localDataSource.deleteUser(id: userIsar.idString);
 
-//   group('getUsers', () {
-//     test('should throw LocalStorageFailure()', () async {
-//       /*
-//       */
-//     });
-//     test('should return list of users', () async {
-//       when(mockIsar.getCollection<UserIsar>()).thenReturn(
-//         mockIsarCollectionUser,
-//       );
-//       when(mockIsarCollectionUser.where()).thenReturn(mockQueryBuilderWhere);
-//       when(mockQueryBuilderWhere.offset(1)).thenReturn(mockQueryBuilderOffset);
-//       when(mockQueryBuilderOffset.limit(Pagination.limit)).thenReturn(
-//         mockQueryBuilderLimit,
-//       );
-//       when(mockQueryBuilderLimit.findAll()).thenAnswer(
-//         (_) async => mockUserIsars,
-//       );
+      final result = await isar.writeTxn(
+        () async {
+          final UserIsar tempUserIsar = UserIsar.fromUser(user);
+          await isar.userIsars.putByIdString(tempUserIsar);
 
-//       final result = await localDataSource.getUsers(page: 1);
+          return await isar.userIsars.deleteByIdString(tempUserIsar.idString);
+        },
+      );
+      expect(result, true);
+    });
 
-//       expect(result, mockUsers);
+    test('should return false, when delete data not exist', () async {
+      await localDataSource.deleteUser(id: 'anyId');
 
-//       verifyInOrder([
-//         mockIsar.getCollection<UserIsar>(),
-//         mockIsarCollectionUser.where(),
-//         mockQueryBuilderWhere.offset(1),
-//         mockQueryBuilderOffset.limit(Pagination.limit),
-//         mockQueryBuilderLimit.findAll(),
-//       ]);
-//     });
-//   });
+      final result = await isar.writeTxn(
+        () async {
+          return await isar.userIsars.deleteByIdString('anyId');
+        },
+      );
+      expect(result, false);
+    });
+  });
 
-//   group('setUser', () {
-//     test('should throw LocalStorageFailure()', () async {
-//       /*
-//       */
-//     });
-//     test('should call put', () async {
-//       when(mockIsar.getCollection<UserIsar>()).thenReturn(
-//         mockIsarCollectionUser,
-//       );
-//       when(mockIsarCollectionUser.put(
-//         any,
-//         replaceOnConflict: anyNamed('replaceOnConflict'),
-//         saveLinks: anyNamed('saveLinks'),
-//       )).thenAnswer((_) async => 1);
+  group('getUser', () {
+    test('should throw LocalStorageFailure()', () async {
+      when(mockIsar.userIsars).thenReturn(mockIsarCollectionUser);
+      when(mockIsarCollectionUser.getByIdString('anyId')).thenThrow(
+        Exception(),
+      );
 
-//       await localDataSource.setUser(user: user);
+      expect(
+        () async => await localDataSourceWithMock.getUser(id: 'anyId'),
+        throwsA(isA<LocalStorageFailure>()),
+      );
 
-//       verifyInOrder([
-//         mockIsar.getCollection<UserIsar>(),
-//         mockIsarCollectionUser.put(
-//           any,
-//           replaceOnConflict: anyNamed('replaceOnConflict'),
-//           saveLinks: anyNamed('saveLinks'),
-//         ),
-//       ]);
-//     });
-//   });
+      verifyInOrder([
+        mockIsar.userIsars,
+        mockIsarCollectionUser.getByIdString('anyId'),
+      ]);
+    });
 
-//   group('setUsers', () {
-//     test('should throw LocalStorageFailure()', () async {
-//       /*
-//       */
-//     });
-//     test('should call put', () async {
-//       when(mockIsar.getCollection<UserIsar>()).thenReturn(
-//         mockIsarCollectionUser,
-//       );
-//       when(mockIsarCollectionUser.put(
-//         any,
-//         replaceOnConflict: anyNamed('replaceOnConflict'),
-//       )).thenAnswer((_) async => 1);
+    test('should return user', () async {
+      when(mockIsar.userIsars).thenReturn(mockIsarCollectionUser);
+      when(mockIsarCollectionUser.getByIdString('anyId')).thenAnswer(
+        (_) async => mockUserIsar,
+      );
+      when(mockUserIsar.location).thenReturn(mockIsarLinkLocation);
+      when(mockIsarLinkLocation.load()).thenAnswer((_) async => unit);
+      when(mockUserIsar.toUser()).thenReturn(mockUser);
 
-//       await localDataSource.setUsers(users: users);
+      final result = await localDataSourceWithMock.getUser(id: 'anyId');
 
-//       verifyInOrder([
-//         mockIsar.getCollection<UserIsar>(),
-//         mockIsarCollectionUser.put(
-//           any,
-//           replaceOnConflict: anyNamed('replaceOnConflict'),
-//         ),
-//       ]);
-//     });
-//   });
-// }
+      expect(result, mockUser);
+
+      verifyInOrder([
+        mockIsar.userIsars,
+        mockIsarCollectionUser.getByIdString('anyId'),
+        mockUserIsar.location,
+        mockIsarLinkLocation.load(),
+        mockUserIsar.toUser(),
+      ]);
+    });
+  });
+
+  group('getUsers', () {
+    test('should throw LocalStorageFailure()', () async {
+      when(mockIsar.userIsars).thenReturn(mockIsarCollectionUser);
+      when(mockIsarCollectionUser.where()).thenThrow(Exception());
+
+      expect(
+        () async => await localDataSourceWithMock.getUsers(page: 1),
+        throwsA(isA<LocalStorageFailure>()),
+      );
+
+      verifyInOrder([
+        mockIsar.userIsars,
+        mockIsarCollectionUser.where(),
+      ]);
+    });
+
+    test('should call offset and limit, when page args is set', () async {
+      await isar.writeTxn(
+        () async {
+          final UserIsar tempUserIsar = UserIsar.fromUser(user);
+          return await isar.userIsars.putByIdString(tempUserIsar);
+        },
+      );
+
+      final result = await localDataSource.getUsers(page: 1);
+
+      final userIsars = await isar.userIsars
+          .where()
+          .offset(0)
+          .limit(Pagination.limit)
+          .findAll();
+      final List<User> users = [];
+      for (UserIsar userIsar in userIsars) {
+        final user = userIsar.toUser();
+        users.add(user);
+      }
+
+      expect(result, users);
+    });
+
+    test('should not call offset and limit, when page args not set', () async {
+      await isar.writeTxn(
+        () async {
+          final UserIsar tempUserIsar = UserIsar.fromUser(user);
+          return await isar.userIsars.putByIdString(tempUserIsar);
+        },
+      );
+
+      final result = await localDataSource.getUsers();
+
+      final userIsars = await isar.userIsars.where().findAll();
+      final List<User> users = [];
+      for (UserIsar userIsar in userIsars) {
+        final user = userIsar.toUser();
+        users.add(user);
+      }
+
+      expect(result, users);
+    });
+  });
+
+  group('setUser', () {
+    test('should throw LocalStorageFailure()', () async {
+      when(mockIsar.writeTxn(any)).thenThrow(Exception());
+
+      expect(
+        () async => await localDataSourceWithMock.setUser(user: user),
+        throwsA(isA<LocalStorageFailure>()),
+      );
+
+      verify(mockIsar.writeTxn((any)));
+    });
+
+    test('should return 1, when insert succeed', () async {
+      await localDataSource.setUser(user: user);
+
+      final result = await isar.writeTxn(
+        () async {
+          final UserIsar tempUserIsar = UserIsar.fromUser(user);
+          return await isar.userIsars.putByIdString(tempUserIsar);
+        },
+      );
+      expect(result, 1);
+    });
+  });
+
+  group('setUsers', () {
+    test('should throw LocalStorageFailure()', () async {
+      when(mockIsar.writeTxn(any)).thenThrow(Exception());
+
+      expect(
+        () async => await localDataSourceWithMock.setUsers(users: users),
+        throwsA(isA<LocalStorageFailure>()),
+      );
+
+      verify(mockIsar.writeTxn((any)));
+    });
+
+    test('should return 1, when insert succeed', () async {
+      await localDataSource.setUsers(users: users);
+
+      final result = await isar.writeTxn(
+        () async {
+          for (User user in users) {
+            final UserIsar tempUserIsar = UserIsar.fromUser(user);
+            await isar.userIsars.putByIdString(tempUserIsar);
+          }
+          return 1;
+        },
+      );
+      expect(result, 1);
+    });
+  });
+}

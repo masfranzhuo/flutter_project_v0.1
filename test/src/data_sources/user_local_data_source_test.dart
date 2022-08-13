@@ -43,7 +43,6 @@ void main() {
   late MockUser mockUser;
 
   setUp(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
     await Isar.initializeIsarCore(download: true);
     isar = await Isar.open(
       [LocationIsarSchema, UserIsarSchema],

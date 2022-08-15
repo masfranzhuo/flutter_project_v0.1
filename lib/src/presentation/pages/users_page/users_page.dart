@@ -17,17 +17,19 @@ class UsersPage extends StatelessWidget {
         onRefresh: () async {
           GetIt.I<UsersPageCubit>().getUsers(isReload: true);
         },
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(GetIt.I<TranslatorService>().translate(
-              context,
-              'label.pages.users.title',
-            )),
-          ),
-          body: LayoutBuilder(
-            builder: (context, constraints) => _builder(
-              context,
-              constraints,
+        child: SafeArea(
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(GetIt.I<TranslatorService>().translate(
+                context,
+                'label.pages.users.title',
+              )),
+            ),
+            body: LayoutBuilder(
+              builder: (context, constraints) => _builder(
+                context,
+                constraints,
+              ),
             ),
           ),
         ),

@@ -14,17 +14,19 @@ class UserDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: GetIt.I<UserDetailPageCubit>()..getUser(id: id),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(GetIt.I<TranslatorService>().translate(
-            context,
-            'label.pages.userDetail.title',
-          )),
-        ),
-        body: LayoutBuilder(
-          builder: (context, constraints) => _builder(
-            context,
-            constraints,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(GetIt.I<TranslatorService>().translate(
+              context,
+              'label.pages.userDetail.title',
+            )),
+          ),
+          body: LayoutBuilder(
+            builder: (context, constraints) => _builder(
+              context,
+              constraints,
+            ),
           ),
         ),
       ),

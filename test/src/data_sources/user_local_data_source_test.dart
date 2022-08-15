@@ -211,7 +211,7 @@ void main() {
       final userIsars = await isar.userIsars
           .where()
           .offset(0)
-          .limit(Pagination.limit)
+          .limit(PaginationConfig.limit)
           .findAll();
       final List<User> users = [];
       for (UserIsar userIsar in userIsars) {

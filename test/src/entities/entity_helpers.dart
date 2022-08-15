@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_project/core/config/date_config.dart';
+import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/src/entities/location.dart';
 import 'package:flutter_project/src/entities/user.dart';
 

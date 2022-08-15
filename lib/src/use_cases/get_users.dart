@@ -13,7 +13,7 @@ class GetUsers {
 
   Future<Either<Failure, List<User>>> call({
     required int page,
-    int limit = Pagination.limit,
+    int limit = PaginationConfig.limit,
   }) async {
     return repository.getUsers(page: page, limit: limit);
   }

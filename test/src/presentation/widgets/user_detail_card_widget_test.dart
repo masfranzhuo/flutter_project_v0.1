@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_project/core/config/date_config.dart';
+import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/src/presentation/widgets/user_detail_card_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

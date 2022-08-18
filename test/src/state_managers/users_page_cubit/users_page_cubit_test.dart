@@ -49,7 +49,7 @@ void main() {
       },
     );
     blocTest(
-      'should emit failure code = NO_DATA_FAILURE, when return empty users',
+      'should emit failure code = NO_DATA_ERROR, when return empty users',
       build: () {
         when(mockGetUsers(
           page: anyNamed('page'),
@@ -65,7 +65,7 @@ void main() {
         UsersPageState(
           isLoading: false,
           failure: const UnexpectedFailure(
-            code: 'NO_DATA_FAILURE',
+            code: 'NO_DATA_ERROR',
             message: 'No more data available',
           ),
         ),

@@ -125,7 +125,7 @@ void main() {
   );
 
   testWidgets(
-    'should call translate error code, when return NO_DATA_FAILURE failure code',
+    'should call translate error code, when return NO_DATA_ERROR failure code',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
         UsersPageState(),
@@ -135,7 +135,7 @@ void main() {
         Stream.fromIterable([
           UsersPageState(
             failure: const UnexpectedFailure(
-              code: 'NO_DATA_FAILURE',
+              code: 'NO_DATA_ERROR',
               message: 'No more data available',
             ),
           ),
@@ -145,7 +145,7 @@ void main() {
       await _setUpEnvironment(tester);
 
       verify(() =>
-              mockTranslatorService.translate(any(), 'error.NO_DATA_FAILURE'))
+              mockTranslatorService.translate(any(), 'error.NO_DATA_ERROR'))
           .called(1);
     },
   );
@@ -174,11 +174,16 @@ void main() {
         matchesSemantics(label: 'Refresh'),
       );
 
-      // finish the scroll animation
+      /// finish the scroll animation
+      ///
       await tester.pump(const Duration(seconds: 1));
-      // finish the indicator settle animation
+
+      /// finish the indicator settle animation
+      ///
       await tester.pump(const Duration(seconds: 1));
-      // finish the indicator hide animation
+
+      /// finish the indicator hide animation
+      ///
       await tester.pump(const Duration(seconds: 1));
 
       verify(() => mockUsersPageCubit.getUsers(isReload: true)).called(1);

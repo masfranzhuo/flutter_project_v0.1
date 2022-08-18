@@ -35,7 +35,7 @@ class UsersPageCubit extends Cubit<UsersPageState> {
         if (users.isEmpty) {
           emit(state.copyWith(
             failure: const UnexpectedFailure(
-              code: 'NO_DATA_FAILURE',
+              code: 'NO_DATA_ERROR',
               message: 'No more data available',
             ),
             isLoading: false,

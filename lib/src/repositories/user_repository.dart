@@ -39,7 +39,7 @@ class UserRepositoryImpl implements UserRepository {
 
       final result = await dataSource.getUsers(page: page, limit: limit);
       await localDataSource.setUsers(users: result);
-      // await sqfliteDataSource.setUsers(users: result);
+      // await sqfliteDataSource.setUsers(users: result);\
 
       return Right(result);
     } on InternetConnectionFailure catch (failure) {

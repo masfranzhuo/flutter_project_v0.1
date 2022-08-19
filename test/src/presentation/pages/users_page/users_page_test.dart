@@ -55,21 +55,19 @@ void main() {
   }
 
   testWidgets('should translate these keys', (tester) async {
-    when(() => mockUsersPageCubit.state).thenReturn(UsersPageState());
+    when(() => mockUsersPageCubit.state).thenReturn(UsersPageState.initial());
     await _setUpEnvironment(tester);
 
     String translate = 'label';
     verify(() =>
         mockTranslatorService.translate(any(), '$translate.pages.users.title'));
-    verify(() =>
-        mockTranslatorService.translate(any(), '$translate.button.loadMore'));
   });
 
   testWidgets(
     'should find CircularProgressIndicator widget, when state isLoading is true',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(isLoading: true),
+        UsersPageState.loading(),
       );
 
       await _setUpEnvironment(tester);
@@ -84,10 +82,10 @@ void main() {
   );
 
   testWidgets(
-    'should find UserCardWidget widget, when users data is loaded with load more ElevatedButton',
+    'should find UserCardWidget widget, when users data is loaded',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(users: users),
+        UsersPageState.loaded(users: users),
       );
 
       await _setUpEnvironment(tester);
@@ -98,29 +96,85 @@ void main() {
         ),
         findsOneWidget,
       );
-      expect(find.byType(ElevatedButton), findsOneWidget);
     },
   );
 
   testWidgets(
-    'should call getUsers(), when tap at load more ElevatedButton',
+    'should call getUsers(), when scroll at the bottom of page',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(),
+        UsersPageState.loading(users: users),
       );
       whenListen(
         mockUsersPageCubit,
         Stream.fromIterable([
-          UsersPageState(users: users),
+          UsersPageState.loaded(users: [...users, ...users]),
         ]),
       );
 
       await _setUpEnvironment(tester);
 
-      final button = find.byType(ElevatedButton);
-      await tester.tap(button);
+      // https://www.anycodings.com/1questions/1483720/flutter-how-to-test-the-scroll
+      final listView = tester.widget<ListView>(find.byType(ListView));
+      final ctrl = listView.controller;
+      ctrl?.jumpTo(ctrl.offset + 300);
+      await tester.pump();
 
       verify(() => mockUsersPageCubit.getUsers()).called(2);
+    },
+  );
+
+  testWidgets(
+    'should find CircularProgressIndicator widget, when scroll at the bottom of page',
+    (WidgetTester tester) async {
+      when(() => mockUsersPageCubit.state).thenReturn(
+        UsersPageState.loaded(users: users),
+      );
+      whenListen(
+        mockUsersPageCubit,
+        Stream.fromIterable([
+          UsersPageState.loading(users: users),
+        ]),
+      );
+
+      await _setUpEnvironment(tester);
+
+      // https://www.anycodings.com/1questions/1483720/flutter-how-to-test-the-scroll
+      final listView = tester.widget<ListView>(find.byType(ListView));
+      final ctrl = listView.controller;
+      ctrl?.jumpTo(ctrl.offset + 300);
+      await tester.pump();
+
+      expect(
+        find.byWidgetPredicate(
+          (w) =>
+              w is Padding &&
+              w.padding == const EdgeInsets.all(16) &&
+              w.child is Center &&
+              (w.child as Center).child is CircularProgressIndicator,
+        ),
+        findsOneWidget,
+      );
+
+      /// position of the scrollview
+      ///
+      // final gesture = await tester.startGesture(const Offset(0, 300));
+
+      // /// how much to scroll by
+      // ///
+      // await gesture.moveBy(const Offset(0, -300));
+      // await tester.pump();
+
+      // await tester.dragUntilVisible(
+      //   find.byWidgetPredicate(
+      //     (w) => w is UserCardWidget && w.user == users.last,
+      //   ),
+      //   find.byKey(const Key('users-page_list_view')),
+      //   const Offset(0, -300),
+      // );
+      // await tester.pump();
+
+      verify(() => mockUsersPageCubit.getUsers()).called(1);
     },
   );
 
@@ -128,12 +182,12 @@ void main() {
     'should call translate error code, when return NO_DATA_ERROR failure code',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(),
+        UsersPageState.loaded(),
       );
       whenListen(
         mockUsersPageCubit,
         Stream.fromIterable([
-          UsersPageState(
+          UsersPageState.error(
             failure: const UnexpectedFailure(
               code: 'NO_DATA_ERROR',
               message: 'No more data available',
@@ -151,10 +205,10 @@ void main() {
   );
 
   testWidgets(
-    'should call getUsers(isReload: true), when refresh indicator',
+    'should call getUsers(isReload: true), when use refresh indicator',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(users: users),
+        UsersPageState.loaded(users: users),
       );
 
       final SemanticsHandle handle = tester.ensureSemantics();
@@ -201,11 +255,11 @@ void main() {
         () => mockUserDetailPageCubit,
       );
       when(() => mockUserDetailPageCubit.state).thenReturn(
-        UserDetailPageState(user: user),
+        UserDetailPageState.loaded(user: user),
       );
 
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(users: users),
+        UsersPageState.loaded(users: users),
       );
       await _setUpEnvironment(tester);
 

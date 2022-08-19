@@ -18,7 +18,6 @@ class UserIsar {
   late String? gender;
   late String? email;
   late String? phone;
-  // TODO: use embedded onject instead of link
   final location = IsarLink<LocationIsar>();
 
   UserIsar();

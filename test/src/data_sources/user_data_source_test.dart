@@ -68,7 +68,7 @@ void main() {
   });
 
   group('getUser', () {
-    test('should throw UnexpectedFailure()', () async {
+    test('should throw Exception', () async {
       when(mockHttpClientService.get(
         path: anyNamed('path'),
         queryParameters: anyNamed('queryParameters'),

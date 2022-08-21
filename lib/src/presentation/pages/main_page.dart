@@ -20,7 +20,7 @@ class MainPage extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (context, widget) => MaterialApp(
-        title: 'Flutter Demo',
+        title: GetIt.I<BaseConfig>().appName,
         debugShowCheckedModeBanner: GetIt.I<BaseConfig>().showDebugInfo,
         theme: ThemeData(
           primarySwatch: ThemeConfig.primaryColor,

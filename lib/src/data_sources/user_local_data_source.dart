@@ -65,8 +65,10 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<List<User>> getUsers(
-      {int? page, int limit = PaginationConfig.limit}) async {
+  Future<List<User>> getUsers({
+    int? page,
+    int limit = PaginationConfig.limit,
+  }) async {
     try {
       final query = isar.userIsars.where();
       if (page != null) {

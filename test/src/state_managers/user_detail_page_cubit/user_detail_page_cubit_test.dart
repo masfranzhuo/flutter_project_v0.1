@@ -22,7 +22,7 @@ void main() {
 
   group('getUser', () {
     blocTest(
-      'should emit failure, when return error',
+      'should emit error, when return failure',
       build: () {
         when(mockGetUser(id: anyNamed('id'))).thenAnswer(
           (_) async => const Left(UnexpectedFailure()),
@@ -38,7 +38,7 @@ void main() {
       },
     );
     blocTest(
-      'should emit user, when successfully get user',
+      'should emit loaded, when successfully get user',
       build: () {
         when(mockGetUser(id: anyNamed('id'))).thenAnswer(
           (_) async => Right(user),

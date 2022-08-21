@@ -10,9 +10,7 @@ import 'package:path_provider/path_provider.dart';
 
 @module
 abstract class RegisterModule {
-  Dio dio() => Dio(BaseOptions(
-        baseUrl: GetIt.I<BaseConfig>().baseUrl,
-      ));
+  Dio dio() => Dio(BaseOptions(baseUrl: GetIt.I<BaseConfig>().baseUrl));
 
   @preResolve
   Future<Box<dynamic>> get hive async => Hive.box('box');

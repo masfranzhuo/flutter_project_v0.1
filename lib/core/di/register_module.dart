@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_project/core/config/base_config.dart';
-import 'package:flutter_project/src/entities/location_isar.dart';
-import 'package:flutter_project/src/entities/user_isar.dart';
+import 'package:flutter_project/src/data_sources/database/schemas/user_isar.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
@@ -17,9 +16,9 @@ abstract class RegisterModule {
 
   @preResolve
   Future<Isar> get isar async => await Isar.open(
-        [LocationIsarSchema, UserIsarSchema],
+        [UserIsarSchema],
         directory: (await getApplicationSupportDirectory()).path,
-        inspector: true,
+        name: GetIt.I<BaseConfig>().appName,
       );
 
   /// sqflite only works for mobile device currently

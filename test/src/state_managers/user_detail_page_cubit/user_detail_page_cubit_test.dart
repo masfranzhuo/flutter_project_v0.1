@@ -30,12 +30,8 @@ void main() {
         return cubit;
       },
       act: (_) async => cubit.getUser(id: 'anyId'),
-      expect: () => [
-        Error(failure: const UnexpectedFailure()),
-      ],
-      verify: (_) async {
-        verify(mockGetUser(id: anyNamed('id')));
-      },
+      expect: () => [Loading(), Error(failure: const UnexpectedFailure())],
+      verify: (_) => verify(mockGetUser(id: anyNamed('id'))),
     );
     blocTest(
       'should emit loaded, when successfully get user',
@@ -46,10 +42,8 @@ void main() {
         return cubit;
       },
       act: (_) async => cubit.getUser(id: 'anyId'),
-      expect: () => [Loaded(user: user)],
-      verify: (_) async {
-        verify(mockGetUser(id: anyNamed('id')));
-      },
+      expect: () => [Loading(), Loaded(user: user)],
+      verify: (_) => verify(mockGetUser(id: anyNamed('id'))),
     );
   });
 }

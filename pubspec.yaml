@@ -27,8 +27,8 @@ dependencies:
   hive_flutter: ^1.1.0
   injectable: ^1.5.3
   intl: ^0.17.0
-  isar: 3.0.0-dev.8
-  isar_flutter_libs: 3.0.0-dev.8
+  isar: 3.0.0-dev.10
+  isar_flutter_libs: 3.0.0-dev.10
   json_annotation: ^4.6.0
   path: ^1.8.0
   path_provider: ^2.0.11
@@ -42,7 +42,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.0.0
   injectable_generator: ^1.5.3
-  isar_generator: 3.0.0-dev.8
+  isar_generator: 3.0.0-dev.10
   json_serializable: ^6.3.1
   mockito: ^5.2.0
   mocktail: ^0.3.0

@@ -5,8 +5,8 @@ import 'package:flutter_project/src/presentation/widgets/user_card_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../mock_helpers.dart';
-import '../../entities/entity_helpers.dart';
+import '../../../helpers/mock_helpers.dart';
+import '../../../helpers/entity_helpers.dart';
 
 void main() {
   late MockOnTap mockOnTap;

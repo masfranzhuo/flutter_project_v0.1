@@ -1,5 +1,5 @@
 import 'package:flutter_project/core/config/general_config.dart';
-import 'package:flutter_project/src/data_sources/database/schemas/location_isar.dart';
+import 'package:flutter_project/src/database/schemas/location_isar.dart';
 import 'package:isar/isar.dart';
 
 part 'user_isar.g.dart';

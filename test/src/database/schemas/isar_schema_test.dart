@@ -1,9 +1,9 @@
-import 'package:flutter_project/src/data_sources/database/schemas/location_isar.dart';
-import 'package:flutter_project/src/data_sources/database/schemas/user_isar.dart';
+import 'package:flutter_project/src/database/schemas/location_isar.dart';
+import 'package:flutter_project/src/database/schemas/user_isar.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import '../../../entities/entity_helpers.dart';
-import 'isar_schema_helpers.dart';
+import '../../../helpers/entity_helpers.dart';
+import '../../../helpers/isar_schema_helpers.dart';
 
 void main() {
   group('LocationIsar', () {

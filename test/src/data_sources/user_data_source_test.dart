@@ -6,7 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:flutter_project/core/services/http_client.dart';
 
-import '../entities/entity_helpers.dart';
+import '../../helpers/entity_helpers.dart';
 import 'user_data_source_test.mocks.dart';
 
 @GenerateMocks([HttpClientService])

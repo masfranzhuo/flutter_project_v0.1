@@ -14,8 +14,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../entities/entity_helpers.dart';
-import '../../mock_helpers.dart';
+import '../../../../helpers/entity_helpers.dart';
+import '../../../../helpers/mock_helpers.dart';
 
 void main() {
   late MockTranslatorService mockTranslatorService;

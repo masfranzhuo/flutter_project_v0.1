@@ -4,7 +4,7 @@ import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/src/entities/location.dart';
 import 'package:flutter_project/src/entities/user.dart';
 
-import '../../fixtures/fixtures_reader.dart';
+import '../fixtures/fixtures_reader.dart';
 
 /// User and List of Users
 ///

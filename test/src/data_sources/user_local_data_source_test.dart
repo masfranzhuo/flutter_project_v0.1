@@ -1,8 +1,8 @@
 import 'package:flutter_project/core/config/base_config.dart';
 import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/core/utils/failure.dart';
-import 'package:flutter_project/src/data_sources/database/schemas/user_isar.dart';
 import 'package:flutter_project/src/data_sources/user_local_data_source.dart';
+import 'package:flutter_project/src/database/schemas/user_isar.dart';
 import 'package:flutter_project/src/entities/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
@@ -11,8 +11,8 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../entities/entity_helpers.dart';
-import 'database/schemas/isar_schema_helpers.dart';
+import '../../helpers/entity_helpers.dart';
+import '../../helpers/isar_schema_helpers.dart';
 import 'user_local_data_source_test.mocks.dart';
 
 @GenerateMocks([], customMocks: [

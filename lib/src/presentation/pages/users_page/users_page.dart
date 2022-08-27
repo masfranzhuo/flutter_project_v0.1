@@ -23,8 +23,8 @@ class _UsersPageState extends State<UsersPage> {
       final maxScroll = _scrollController.position.maxScrollExtent;
       final currentScroll = _scrollController.position.pixels;
       if (maxScroll <= currentScroll) {
-        GetIt.I<UsersPageCubit>().state.mapOrNull(loaded: (_) {
-          GetIt.I<UsersPageCubit>().getUsers();
+        GetIt.I<UsersPageCubit>().state.mapOrNull(loaded: (_) async {
+          await GetIt.I<UsersPageCubit>().getUsers();
         });
       }
     });
@@ -43,7 +43,7 @@ class _UsersPageState extends State<UsersPage> {
       value: GetIt.I<UsersPageCubit>()..getUsers(),
       child: RefreshIndicator(
         onRefresh: () async {
-          GetIt.I<UsersPageCubit>().getUsers(isReload: true);
+          await GetIt.I<UsersPageCubit>().getUsers(isReload: true);
         },
         child: SafeArea(
           child: Scaffold(

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/core/utils/failure.dart';
@@ -45,6 +46,8 @@ void main() {
   });
 
   Future<void> _setUpEnvironment(WidgetTester tester) async {
+    when(() => mockUsersPageCubit.getUsers(isReload: any(named: 'isReload')))
+        .thenAnswer((_) async => Unit);
     await tester.pumpWidget(ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (context, widget) => MaterialApp(
@@ -100,7 +103,7 @@ void main() {
   );
 
   testWidgets(
-    'should call getUsers(), when scroll at the bottom of page',
+    'should call getUsers(), when scroll into the bottom of page',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
         UsersPageState.loading(users: users),
@@ -125,7 +128,7 @@ void main() {
   );
 
   testWidgets(
-    'should find CircularProgressIndicator widget, when scroll at the bottom of page',
+    'should find CircularProgressIndicator widget, when scroll into the bottom of page',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
         UsersPageState.loaded(users: users),
@@ -257,6 +260,8 @@ void main() {
       when(() => mockUserDetailPageCubit.state).thenReturn(
         UserDetailPageState.loaded(user: user),
       );
+      when(() => mockUserDetailPageCubit.getUser(id: any(named: 'id')))
+          .thenAnswer((_) async => Unit);
 
       when(() => mockUsersPageCubit.state).thenReturn(
         UsersPageState.loaded(users: users),

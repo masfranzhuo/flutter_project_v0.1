@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/core/utils/failure.dart';
@@ -41,6 +42,8 @@ void main() {
   });
 
   Future<void> _setUpEnvironment(WidgetTester tester) async {
+    when(() => mockUserDetailPageCubit.getUser(id: any(named: 'id')))
+        .thenAnswer((_) async => Unit);
     await tester.pumpWidget(ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (context, widget) => MaterialApp(

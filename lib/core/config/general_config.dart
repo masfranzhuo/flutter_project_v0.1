@@ -23,13 +23,13 @@ class NumberConfig {
 
 class DateConfig {
   static String dateFormat(DateTime date, [String locale = 'en_US']) =>
-      DateFormat('dd MMMM yyyy', locale).format(date);
+      DateFormat('dd MMMM yyyy', locale).format(date.toLocal());
 
   static String dateTimeFormat(DateTime date, [String locale = 'en_US']) =>
-      DateFormat('dd MMMM yyyy, HH:mm', locale).format(date);
+      DateFormat('dd MMMM yyyy, HH:mm', locale).format(date.toLocal());
 
   static String dateTimeNameFormat(DateTime date, [String locale = 'en_US']) =>
-      DateFormat('EEEE,dd MMMM yyyy, HH:mm', locale).format(date);
+      DateFormat('EEEE,dd MMMM yyyy, HH:mm', locale).format(date.toLocal());
 
   static DateTime? dateTimeFromJson(String? date) =>
       date != null && date.isNotEmpty ? DateTime.parse(date).toLocal() : null;

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/core/services/translator.dart';
-import 'package:flutter_project/src/presentation/pages/user_detail_page/user_detail_page.dart';
 import 'package:flutter_project/src/presentation/widgets/user_card_widget.dart';
 import 'package:flutter_project/src/state_managers/users_page_cubit/users_page_cubit.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 class UsersPage extends StatefulWidget {
   const UsersPage({Key? key}) : super(key: key);
@@ -97,9 +97,7 @@ class _UsersPageState extends State<UsersPage> {
               UserCardWidget(
                 user: user,
                 onTap: (context) {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => UserDetailPage(id: user.id),
-                  ));
+                  GoRouter.of(context).go('/user-detail/${user.id}');
                 },
               ),
             ];

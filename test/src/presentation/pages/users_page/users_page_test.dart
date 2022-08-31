@@ -5,10 +5,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/core/utils/failure.dart';
-import 'package:flutter_project/src/presentation/pages/user_detail_page/user_detail_page.dart';
 import 'package:flutter_project/src/presentation/pages/users_page/users_page.dart';
 import 'package:flutter_project/src/presentation/widgets/user_card_widget.dart';
-import 'package:flutter_project/src/state_managers/user_detail_page_cubit/user_detail_page_cubit.dart';
 import 'package:flutter_project/src/state_managers/users_page_cubit/users_page_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,7 +19,7 @@ import '../../../../helpers/mock_helpers.dart';
 void main() {
   late MockTranslatorService mockTranslatorService;
   late MockUsersPageCubit mockUsersPageCubit;
-  late MockNavigatorObserver mockObserver;
+  late MockGoRouter mockGoRouter;
 
   setUpAll(() {
     HttpOverrides.global = null;
@@ -30,7 +28,7 @@ void main() {
   setUp(() {
     mockTranslatorService = MockTranslatorService();
     mockUsersPageCubit = MockUsersPageCubit();
-    mockObserver = MockNavigatorObserver();
+    mockGoRouter = MockGoRouter();
 
     GetIt.I.registerLazySingleton<TranslatorService>(
       () => mockTranslatorService,
@@ -51,8 +49,10 @@ void main() {
     await tester.pumpWidget(ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (context, widget) => MaterialApp(
-        navigatorObservers: [mockObserver],
-        home: const UsersPage(),
+        home: MockGoRouterProvider(
+          goRouter: mockGoRouter,
+          child: const UsersPage(),
+        ),
       ),
     ));
   }
@@ -252,17 +252,6 @@ void main() {
   testWidgets(
     'should verify navigate to UserDetailPage, when tap at IconButton',
     (WidgetTester tester) async {
-      final MockUserDetailPageCubit mockUserDetailPageCubit =
-          MockUserDetailPageCubit();
-      GetIt.I.registerLazySingleton<UserDetailPageCubit>(
-        () => mockUserDetailPageCubit,
-      );
-      when(() => mockUserDetailPageCubit.state).thenReturn(
-        UserDetailPageState.loaded(user: user),
-      );
-      when(() => mockUserDetailPageCubit.getUser(id: any(named: 'id')))
-          .thenAnswer((_) async => Unit);
-
       when(() => mockUsersPageCubit.state).thenReturn(
         UsersPageState.loaded(users: users),
       );
@@ -274,9 +263,7 @@ void main() {
       await tester.tap(tapable);
       await tester.pumpAndSettle();
 
-      expect(find.byType(UsersPage), findsNothing);
-      expect(find.byType(UserDetailPage), findsOneWidget);
-      verify(() => mockObserver.didPush(any(), any()));
+      verify(() => mockGoRouter.go('/user-detail/${users[0].id}')).called(1);
     },
   );
 }

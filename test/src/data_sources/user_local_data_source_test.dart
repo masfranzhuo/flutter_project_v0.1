@@ -1,4 +1,3 @@
-import 'package:flutter_project/core/config/base_config.dart';
 import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/core/utils/failure.dart';
 import 'package:flutter_project/src/data_sources/user_local_data_source.dart';
@@ -29,17 +28,15 @@ void main() {
   late MockIsar mockIsar;
   late MockIsarCollection mockIsarCollectionUser;
 
-  setUp(() async {
-    // TODO: remove this?
-    GetIt.I.registerLazySingleton<BaseConfig>(() => DevConfig());
-
+  setUpAll(() async {
     await Isar.initializeIsarCore(download: true);
     isar = await Isar.open(
       [UserIsarSchema],
       directory: (await getApplicationSupportDirectory()).path,
-      name: GetIt.I<BaseConfig>().appName,
     );
+  });
 
+  setUp(() {
     mockIsar = MockIsar();
     mockIsarCollectionUser = MockIsarCollection();
 

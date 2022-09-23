@@ -6,14 +6,17 @@ class PaginationConfig {
 
 class NumberConfig {
   static String format(double number, [String locale = 'en_US']) =>
-      NumberFormat('#,##0', locale).format(number);
+      NumberFormat('#,##0.00', locale).format(number);
 
   static String currencyFormat(
     double number, [
     String prefix = '\$',
     String locale = 'en_US',
   ]) =>
-      '$prefix${NumberFormat('#,##0', locale).format(number)}';
+      '$prefix${NumberFormat('#,##0.00', locale).format(number)}';
+
+  static String currencySymbol([String locale = 'en_US']) =>
+      NumberFormat('#,##0.00', locale).currencySymbol;
 }
 
 class DateConfig {

@@ -5,9 +5,10 @@ import 'package:flutter_project/src/presentation/pages/users_page/users_page.dar
 import 'package:go_router/go_router.dart';
 
 class RoutesConfig {
-  static GoRouter router({String initialLocation = '/'}) {
+  static GoRouter router({String initialLocation = '/', debug = false}) {
     return GoRouter(
       initialLocation: initialLocation,
+      debugLogDiagnostics: debug,
       routes: <GoRoute>[
         GoRoute(
           path: '/',

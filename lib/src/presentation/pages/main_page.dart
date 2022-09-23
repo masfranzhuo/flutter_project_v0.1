@@ -9,8 +9,9 @@ import 'package:get_it/get_it.dart';
 
 class MainPage extends StatelessWidget {
   final FlutterI18nDelegate flutterI18nDelegate;
+  final _router = RoutesConfig.router();
 
-  const MainPage({
+  MainPage({
     Key? key,
     required this.flutterI18nDelegate,
   }) : super(key: key);
@@ -20,10 +21,9 @@ class MainPage extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (context, widget) => MaterialApp.router(
-        routeInformationProvider:
-            RoutesConfig.router().routeInformationProvider,
-        routeInformationParser: RoutesConfig.router().routeInformationParser,
-        routerDelegate: RoutesConfig.router().routerDelegate,
+        routeInformationProvider: _router.routeInformationProvider,
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
         title: GetIt.I<BaseConfig>().appName,
         debugShowCheckedModeBanner: GetIt.I<BaseConfig>().showDebugInfo,
         theme: ThemeConfig.light,

@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_project/core/services/internet_connection.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class HttpClientService {
@@ -10,6 +9,7 @@ abstract class HttpClientService {
   });
   Future<Response> post({
     required String path,
+    required dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   });
@@ -36,12 +36,8 @@ abstract class HttpClientService {
 @LazySingleton(as: HttpClientService)
 class HttpClientServiceImpl implements HttpClientService {
   final Dio dio;
-  final InternetConnectionService internetConnectionService;
 
-  HttpClientServiceImpl({
-    required this.dio,
-    required this.internetConnectionService,
-  });
+  HttpClientServiceImpl({required this.dio});
 
   @override
   Future<Response> get({
@@ -49,7 +45,6 @@ class HttpClientServiceImpl implements HttpClientService {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    await internetConnectionService.checkConnection();
     try {
       final response = await dio.get(
         path,
@@ -59,27 +54,28 @@ class HttpClientServiceImpl implements HttpClientService {
 
       return response;
     } on DioError catch (e) {
-      return e.response!;
+      throw (Exception(e));
     }
   }
 
   @override
   Future<Response> post({
     required String path,
+    required dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    await internetConnectionService.checkConnection();
     try {
       final response = await dio.post(
         path,
+        data: data,
         queryParameters: queryParameters,
         options: options,
       );
 
       return response;
     } on DioError catch (e) {
-      return e.response!;
+      throw (Exception(e));
     }
   }
 
@@ -90,7 +86,6 @@ class HttpClientServiceImpl implements HttpClientService {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    await internetConnectionService.checkConnection();
     try {
       final response = await dio.put(
         path,
@@ -101,7 +96,7 @@ class HttpClientServiceImpl implements HttpClientService {
 
       return response;
     } on DioError catch (e) {
-      return e.response!;
+      throw (Exception(e));
     }
   }
 
@@ -112,7 +107,6 @@ class HttpClientServiceImpl implements HttpClientService {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    await internetConnectionService.checkConnection();
     try {
       final response = await dio.patch(
         path,
@@ -123,7 +117,7 @@ class HttpClientServiceImpl implements HttpClientService {
 
       return response;
     } on DioError catch (e) {
-      return e.response!;
+      throw (Exception(e));
     }
   }
 
@@ -134,7 +128,6 @@ class HttpClientServiceImpl implements HttpClientService {
     Map<String, dynamic>? queryParameters,
     Options? options,
   }) async {
-    await internetConnectionService.checkConnection();
     try {
       final response = await dio.delete(
         path,
@@ -145,7 +138,7 @@ class HttpClientServiceImpl implements HttpClientService {
 
       return response;
     } on DioError catch (e) {
-      return e.response!;
+      throw (Exception(e));
     }
   }
 }

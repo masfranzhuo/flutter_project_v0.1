@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_project/core/config/base_config.dart';
-import 'package:flutter_project/src/presentation/pages/users_page/users_page.dart';
+import 'package:flutter_project/core/config/routes_config.dart';
+import 'package:flutter_project/core/config/theme_config.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 
 class MainPage extends StatelessWidget {
   final FlutterI18nDelegate flutterI18nDelegate;
+  final _router = RoutesConfig.router();
 
-  const MainPage({
+  MainPage({
     Key? key,
     required this.flutterI18nDelegate,
   }) : super(key: key);
@@ -18,12 +20,13 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(360, 690),
-      builder: (context, widget) => MaterialApp(
-        title: 'Flutter Demo',
+      builder: (context, widget) => MaterialApp.router(
+        routeInformationProvider: _router.routeInformationProvider,
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
+        title: GetIt.I<BaseConfig>().appName,
         debugShowCheckedModeBanner: GetIt.I<BaseConfig>().showDebugInfo,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeConfig.light,
         localizationsDelegates: [
           flutterI18nDelegate,
           GlobalMaterialLocalizations.delegate,
@@ -33,7 +36,6 @@ class MainPage extends StatelessWidget {
           Locale('en', 'US'),
           Locale('id', 'ID'),
         ],
-        home: const UsersPage(),
       ),
     );
   }

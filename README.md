@@ -3,7 +3,7 @@
 
 # flutter_project
 
-A new Flutter project architecture.
+A new Flutter project.
 
 ## Getting Started
 

@@ -1,26 +1,25 @@
 import 'dart:io';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/core/utils/failure.dart';
-import 'package:flutter_project/src/presentation/pages/user_detail_page/user_detail_page.dart';
 import 'package:flutter_project/src/presentation/pages/users_page/users_page.dart';
 import 'package:flutter_project/src/presentation/widgets/user_card_widget.dart';
-import 'package:flutter_project/src/state_managers/user_detail_page_cubit/user_detail_page_cubit.dart';
 import 'package:flutter_project/src/state_managers/users_page_cubit/users_page_cubit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../entities/entity_helpers.dart';
-import '../../mock_helpers.dart';
+import '../../../../helpers/entity_helpers.dart';
+import '../../../../helpers/mock_helpers.dart';
 
 void main() {
   late MockTranslatorService mockTranslatorService;
   late MockUsersPageCubit mockUsersPageCubit;
-  late MockNavigatorObserver mockObserver;
+  late MockGoRouter mockGoRouter;
 
   setUpAll(() {
     HttpOverrides.global = null;
@@ -29,7 +28,7 @@ void main() {
   setUp(() {
     mockTranslatorService = MockTranslatorService();
     mockUsersPageCubit = MockUsersPageCubit();
-    mockObserver = MockNavigatorObserver();
+    mockGoRouter = MockGoRouter();
 
     GetIt.I.registerLazySingleton<TranslatorService>(
       () => mockTranslatorService,
@@ -45,31 +44,33 @@ void main() {
   });
 
   Future<void> _setUpEnvironment(WidgetTester tester) async {
+    when(() => mockUsersPageCubit.getUsers(isReload: any(named: 'isReload')))
+        .thenAnswer((_) async => Unit);
     await tester.pumpWidget(ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (context, widget) => MaterialApp(
-        navigatorObservers: [mockObserver],
-        home: const UsersPage(),
+        home: MockGoRouterProvider(
+          goRouter: mockGoRouter,
+          child: const UsersPage(),
+        ),
       ),
     ));
   }
 
   testWidgets('should translate these keys', (tester) async {
-    when(() => mockUsersPageCubit.state).thenReturn(UsersPageState());
+    when(() => mockUsersPageCubit.state).thenReturn(UsersPageState.initial());
     await _setUpEnvironment(tester);
 
     String translate = 'label';
     verify(() =>
         mockTranslatorService.translate(any(), '$translate.pages.users.title'));
-    verify(() =>
-        mockTranslatorService.translate(any(), '$translate.button.loadMore'));
   });
 
   testWidgets(
     'should find CircularProgressIndicator widget, when state isLoading is true',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(isLoading: true),
+        UsersPageState.loading(),
       );
 
       await _setUpEnvironment(tester);
@@ -84,10 +85,10 @@ void main() {
   );
 
   testWidgets(
-    'should find UserCardWidget widget, when users data is loaded with load more ElevatedButton',
+    'should find UserCardWidget widget, when users data is loaded',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(users: users),
+        UsersPageState.loaded(users: users),
       );
 
       await _setUpEnvironment(tester);
@@ -98,44 +99,100 @@ void main() {
         ),
         findsOneWidget,
       );
-      expect(find.byType(ElevatedButton), findsOneWidget);
     },
   );
 
   testWidgets(
-    'should call getUsers(), when tap at load more ElevatedButton',
+    'should call getUsers(), when scroll into the bottom of page',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(),
+        UsersPageState.loading(users: users),
       );
       whenListen(
         mockUsersPageCubit,
         Stream.fromIterable([
-          UsersPageState(users: users),
+          UsersPageState.loaded(users: [...users, ...users]),
         ]),
       );
 
       await _setUpEnvironment(tester);
 
-      final button = find.byType(ElevatedButton);
-      await tester.tap(button);
+      // https://www.anycodings.com/1questions/1483720/flutter-how-to-test-the-scroll
+      final listView = tester.widget<ListView>(find.byType(ListView));
+      final ctrl = listView.controller;
+      ctrl?.jumpTo(ctrl.offset + 300);
+      await tester.pump();
 
       verify(() => mockUsersPageCubit.getUsers()).called(2);
     },
   );
 
   testWidgets(
-    'should call translate error code, when return NO_DATA_FAILURE failure code',
+    'should find CircularProgressIndicator widget, when scroll into the bottom of page',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(),
+        UsersPageState.loaded(users: users),
       );
       whenListen(
         mockUsersPageCubit,
         Stream.fromIterable([
-          UsersPageState(
+          UsersPageState.loading(users: users),
+        ]),
+      );
+
+      await _setUpEnvironment(tester);
+
+      // https://www.anycodings.com/1questions/1483720/flutter-how-to-test-the-scroll
+      final listView = tester.widget<ListView>(find.byType(ListView));
+      final ctrl = listView.controller;
+      ctrl?.jumpTo(ctrl.offset + 300);
+      await tester.pump();
+
+      expect(
+        find.byWidgetPredicate(
+          (w) =>
+              w is Padding &&
+              w.padding == const EdgeInsets.all(16) &&
+              w.child is Center &&
+              (w.child as Center).child is CircularProgressIndicator,
+        ),
+        findsOneWidget,
+      );
+
+      /// position of the scrollview
+      ///
+      // final gesture = await tester.startGesture(const Offset(0, 300));
+
+      // /// how much to scroll by
+      // ///
+      // await gesture.moveBy(const Offset(0, -300));
+      // await tester.pump();
+
+      // await tester.dragUntilVisible(
+      //   find.byWidgetPredicate(
+      //     (w) => w is UserCardWidget && w.user == users.last,
+      //   ),
+      //   find.byKey(const Key('users-page_list_view')),
+      //   const Offset(0, -300),
+      // );
+      // await tester.pump();
+
+      verify(() => mockUsersPageCubit.getUsers()).called(1);
+    },
+  );
+
+  testWidgets(
+    'should call translate error code, when return NO_DATA_ERROR failure code',
+    (WidgetTester tester) async {
+      when(() => mockUsersPageCubit.state).thenReturn(
+        UsersPageState.loaded(),
+      );
+      whenListen(
+        mockUsersPageCubit,
+        Stream.fromIterable([
+          UsersPageState.error(
             failure: const UnexpectedFailure(
-              code: 'NO_DATA_FAILURE',
+              code: 'NO_DATA_ERROR',
               message: 'No more data available',
             ),
           ),
@@ -145,16 +202,16 @@ void main() {
       await _setUpEnvironment(tester);
 
       verify(() =>
-              mockTranslatorService.translate(any(), 'error.NO_DATA_FAILURE'))
+              mockTranslatorService.translate(any(), 'error.NO_DATA_ERROR'))
           .called(1);
     },
   );
 
   testWidgets(
-    'should call getUsers(isReload: true), when refresh indicator',
+    'should call getUsers(isReload: true), when use refresh indicator',
     (WidgetTester tester) async {
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(users: users),
+        UsersPageState.loaded(users: users),
       );
 
       final SemanticsHandle handle = tester.ensureSemantics();
@@ -174,11 +231,16 @@ void main() {
         matchesSemantics(label: 'Refresh'),
       );
 
-      // finish the scroll animation
+      /// finish the scroll animation
+      ///
       await tester.pump(const Duration(seconds: 1));
-      // finish the indicator settle animation
+
+      /// finish the indicator settle animation
+      ///
       await tester.pump(const Duration(seconds: 1));
-      // finish the indicator hide animation
+
+      /// finish the indicator hide animation
+      ///
       await tester.pump(const Duration(seconds: 1));
 
       verify(() => mockUsersPageCubit.getUsers(isReload: true)).called(1);
@@ -190,17 +252,8 @@ void main() {
   testWidgets(
     'should verify navigate to UserDetailPage, when tap at IconButton',
     (WidgetTester tester) async {
-      final MockUserDetailPageCubit mockUserDetailPageCubit =
-          MockUserDetailPageCubit();
-      GetIt.I.registerLazySingleton<UserDetailPageCubit>(
-        () => mockUserDetailPageCubit,
-      );
-      when(() => mockUserDetailPageCubit.state).thenReturn(
-        UserDetailPageState(user: user),
-      );
-
       when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState(users: users),
+        UsersPageState.loaded(users: users),
       );
       await _setUpEnvironment(tester);
 
@@ -210,9 +263,7 @@ void main() {
       await tester.tap(tapable);
       await tester.pumpAndSettle();
 
-      expect(find.byType(UsersPage), findsNothing);
-      expect(find.byType(UserDetailPage), findsOneWidget);
-      verify(() => mockObserver.didPush(any(), any()));
+      verify(() => mockGoRouter.go('/user-detail/${users[0].id}')).called(1);
     },
   );
 }

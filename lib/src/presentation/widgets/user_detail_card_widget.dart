@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_project/core/config/date_config.dart';
+import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/src/entities/user.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

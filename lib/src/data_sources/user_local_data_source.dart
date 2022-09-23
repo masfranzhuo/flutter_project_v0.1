@@ -1,15 +1,14 @@
 import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/core/utils/failure.dart';
-import 'package:flutter_project/src/entities/location_isar.dart';
+import 'package:flutter_project/src/database/schemas/user_isar.dart';
 import 'package:flutter_project/src/entities/user.dart';
-import 'package:flutter_project/src/entities/user_isar.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 
 abstract class UserLocalDataSource {
   Future<void> setUsers({required List<User> users});
   Future<void> setUser({required User user});
-  Future<List<User>> getUsers({int? page, int limit = Pagination.limit});
+  Future<List<User>> getUsers({int? page, int limit = PaginationConfig.limit});
   Future<User> getUser({required String id});
   Future<void> deleteUser({required String id});
   Future<void> deleteAllUser();
@@ -29,7 +28,6 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
             await isar.userIsars.where().idStringProperty().findAll();
 
         await isar.userIsars.deleteAllByIdString(idStrings);
-        await isar.locationIsars.deleteAllByIdString(idStrings);
       });
       return;
     } on Exception catch (e) {
@@ -42,7 +40,6 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     try {
       await isar.writeTxn(() async {
         await isar.userIsars.deleteByIdString(id);
-        await isar.locationIsars.deleteByIdString(id);
       });
       return;
     } on Exception catch (e) {
@@ -54,9 +51,8 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   Future<User> getUser({required String id}) async {
     try {
       final userIsar = await isar.userIsars.getByIdString(id);
-      await userIsar?.location.load();
 
-      final user = userIsar!.toUser();
+      final user = User.fromJson(userIsar!.toJson());
 
       return user;
     } on Exception catch (e) {
@@ -65,7 +61,10 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   }
 
   @override
-  Future<List<User>> getUsers({int? page, int limit = Pagination.limit}) async {
+  Future<List<User>> getUsers({
+    int? page,
+    int limit = PaginationConfig.limit,
+  }) async {
     try {
       final query = isar.userIsars.where();
       if (page != null) {
@@ -76,7 +75,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
       final List<User> users = [];
       for (UserIsar userIsar in userIsars) {
-        final user = userIsar.toUser();
+        final user = User.fromJson(userIsar.toJson());
         users.add(user);
       }
 
@@ -89,12 +88,10 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
   @override
   Future<void> setUser({required User user}) async {
     try {
-      final userIsar = UserIsar.fromUser(user);
+      final userIsar = UserIsar.fromJson(user.toJson());
 
       await isar.writeTxn(() async {
         await isar.userIsars.putByIdString(userIsar);
-        await isar.locationIsars.put(userIsar.location.value!);
-        await userIsar.location.save();
       });
       return;
     } on Exception catch (e) {
@@ -107,7 +104,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
     try {
       await isar.writeTxn(() async {
         for (User user in users) {
-          final userIsar = UserIsar.fromUser(user);
+          final userIsar = UserIsar.fromJson(user.toJson());
           await isar.userIsars.putByIdString(userIsar);
         }
       });

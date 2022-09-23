@@ -1,4 +1,4 @@
-import 'package:flutter_project/core/config/date_config.dart';
+import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/src/entities/location.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

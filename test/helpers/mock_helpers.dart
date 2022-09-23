@@ -4,11 +4,13 @@ import 'package:flutter_project/core/config/base_config.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/src/state_managers/user_detail_page_cubit/user_detail_page_cubit.dart';
 import 'package:flutter_project/src/state_managers/users_page_cubit/users_page_cubit.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 
 class FakeBuildContext extends Fake implements BuildContext {}
 
-// function
+/// function
+///
 abstract class OnTap {
   void call(BuildContext context);
 }
@@ -19,7 +21,8 @@ class MockOnTap extends Mock implements OnTap {
   }
 }
 
-// translator service
+/// translator service
+///
 class MockTranslatorService extends Mock implements TranslatorServiceImpl {
   MockTranslatorService() {
     registerFallbackValue(FakeBuildContext());
@@ -36,6 +39,7 @@ class MockTranslatorService extends Mock implements TranslatorServiceImpl {
 }
 
 /// navigation
+///
 class FakeRoute extends Fake implements Route<dynamic> {}
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {
@@ -44,7 +48,34 @@ class MockNavigatorObserver extends Mock implements NavigatorObserver {
   }
 }
 
-// cubits
+/// go router
+///
+class MockGoRouter extends Mock implements GoRouter {}
+
+class MockGoRouterProvider extends StatelessWidget {
+  const MockGoRouterProvider({
+    required this.goRouter,
+    required this.child,
+    Key? key,
+  }) : super(key: key);
+
+  /// the mock navigator used to mock navigation calls
+  ///
+  final MockGoRouter goRouter;
+
+  /// the child [Widget] to render
+  ///
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => InheritedGoRouter(
+        goRouter: goRouter,
+        child: child,
+      );
+}
+
+/// cubits
+///
 class MockUsersPageCubit extends MockCubit<UsersPageState>
     implements UsersPageCubit {}
 
@@ -55,7 +86,8 @@ class MockUserDetailPageCubit extends MockCubit<UserDetailPageState>
 
 class FakeUserDetailPageState extends Fake implements UserDetailPageState {}
 
-// base config
+/// base config
+///
 class MockBaseConfig extends Mock implements BaseConfig {
   MockBaseConfig() {
     when(() => appName).thenReturn('any string');

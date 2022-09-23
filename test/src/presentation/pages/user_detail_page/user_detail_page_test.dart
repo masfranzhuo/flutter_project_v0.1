@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/core/utils/failure.dart';
@@ -12,8 +13,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../entities/entity_helpers.dart';
-import '../../mock_helpers.dart';
+import '../../../../helpers/entity_helpers.dart';
+import '../../../../helpers/mock_helpers.dart';
 
 void main() {
   late MockTranslatorService mockTranslatorService;
@@ -41,6 +42,8 @@ void main() {
   });
 
   Future<void> _setUpEnvironment(WidgetTester tester) async {
+    when(() => mockUserDetailPageCubit.getUser(id: any(named: 'id')))
+        .thenAnswer((_) async => Unit);
     await tester.pumpWidget(ScreenUtilInit(
       designSize: const Size(360, 690),
       builder: (context, widget) => MaterialApp(
@@ -50,9 +53,7 @@ void main() {
   }
 
   testWidgets('should translate these keys', (tester) async {
-    when(() => mockUserDetailPageCubit.state).thenReturn(
-      UserDetailPageState(user: user),
-    );
+    when(() => mockUserDetailPageCubit.state).thenReturn(Loaded(user: user));
     await _setUpEnvironment(tester);
 
     verify(() =>
@@ -62,9 +63,7 @@ void main() {
   testWidgets(
     'should find CircularProgressIndicator widget, when state isLoading is true',
     (WidgetTester tester) async {
-      when(() => mockUserDetailPageCubit.state).thenReturn(
-        UserDetailPageState(isLoading: true),
-      );
+      when(() => mockUserDetailPageCubit.state).thenReturn(Loading());
 
       await _setUpEnvironment(tester);
 
@@ -80,9 +79,7 @@ void main() {
   testWidgets(
     'should call getUser() and find UserDetailCardWidget widget, when user data is loaded',
     (WidgetTester tester) async {
-      when(() => mockUserDetailPageCubit.state).thenReturn(
-        UserDetailPageState(user: user),
-      );
+      when(() => mockUserDetailPageCubit.state).thenReturn(Loaded(user: user));
 
       await _setUpEnvironment(tester);
 
@@ -96,29 +93,19 @@ void main() {
   );
 
   testWidgets(
-    'should find "any message" text and CircularProgressIndicator widget, when return failure',
+    'should find "any message" text, when return failure',
     (WidgetTester tester) async {
-      when(() => mockUserDetailPageCubit.state).thenReturn(
-        UserDetailPageState(user: user),
-      );
+      when(() => mockUserDetailPageCubit.state).thenReturn(Loaded(user: user));
       whenListen(
         mockUserDetailPageCubit,
         Stream.fromIterable([
-          UserDetailPageState(
-            failure: const UnexpectedFailure(message: 'any message'),
-          ),
+          Error(failure: const UnexpectedFailure(message: 'any message')),
         ]),
       );
 
       await _setUpEnvironment(tester);
       await tester.pump();
 
-      expect(
-        find.byWidgetPredicate(
-          (w) => w is Center && w.child is CircularProgressIndicator,
-        ),
-        findsOneWidget,
-      );
       expect(find.text('any message'), findsOneWidget);
     },
   );

@@ -32,7 +32,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
       });
       return;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -44,7 +44,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
       });
       return;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -57,7 +57,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
       return user;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -82,7 +82,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
       return users;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -96,7 +96,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
       });
       return;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -111,7 +111,7 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
       });
       return;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 }

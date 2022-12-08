@@ -34,7 +34,7 @@ void main() {
   });
 
   group('getUser', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockSqfliteService.get(
         table: anyNamed('table'),
         id: anyNamed('id'),
@@ -43,7 +43,7 @@ void main() {
 
       expect(
         () async => await sqfliteDataSource.getUser(id: 'anyId'),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verify(mockSqfliteService.get(
@@ -99,7 +99,7 @@ void main() {
   });
 
   group('getUsers', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockSqfliteService.getList(
         table: anyNamed('table'),
         columns: anyNamed('columns'),
@@ -109,7 +109,7 @@ void main() {
 
       expect(
         () async => await sqfliteDataSource.getUsers(page: 1),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verify(mockSqfliteService.getList(
@@ -164,7 +164,7 @@ void main() {
   });
 
   group('setUser', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockUser.toJson()).thenReturn(
         user.copyWith(location: null).toJson(),
       );
@@ -176,7 +176,7 @@ void main() {
 
       expect(
         () async => await sqfliteDataSource.setUser(user: mockUser),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verifyInOrder([
@@ -236,7 +236,7 @@ void main() {
   });
 
   group('setUsers', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       for (var mockUser in mockUsers) {
         when(mockUser.toJson()).thenReturn(userJson);
       }
@@ -247,7 +247,7 @@ void main() {
 
       expect(
         () async => await sqfliteDataSource.setUsers(users: mockUsers),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verify(mockUser.toJson()).called(mockUsers.length);
@@ -277,7 +277,7 @@ void main() {
   });
 
   group('deleteUser', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockSqfliteService.delete(
         table: anyNamed('table'),
         id: anyNamed('id'),
@@ -285,7 +285,7 @@ void main() {
 
       expect(
         () async => await sqfliteDataSource.deleteUser(id: 'anyId'),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verify(mockSqfliteService.delete(
@@ -310,14 +310,14 @@ void main() {
   });
 
   group('deleteAllUser', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockSqfliteService.deleteAll(
         table: anyNamed('table'),
       )).thenThrow(Exception());
 
       expect(
         () async => await sqfliteDataSource.deleteAllUser(),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verify(mockSqfliteService.deleteAll(

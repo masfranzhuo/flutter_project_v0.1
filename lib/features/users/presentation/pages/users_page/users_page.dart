@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/features/users/presentation/widgets/user_card_widget.dart';
 import 'package:flutter_project/features/users/state_managers/users_page_cubit/users_page_cubit.dart';
+import 'package:flutter_project/ui/extensions/extensions.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -48,10 +48,7 @@ class _UsersPageState extends State<UsersPage> {
         child: SafeArea(
           child: Scaffold(
             appBar: AppBar(
-              title: Text(GetIt.I<TranslatorService>().translate(
-                context,
-                'label.pages.users.title',
-              )),
+              title: Text(context.translate('label.pages.users.title')),
             ),
             body: LayoutBuilder(
               builder: (context, constraints) => _builder(
@@ -73,10 +70,7 @@ class _UsersPageState extends State<UsersPage> {
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(
               content: Text(
-                GetIt.I<TranslatorService>().translate(
-                  context,
-                  'error.${e.code}',
-                ),
+                context.translate('error.${e.code}'),
               ),
             ));
         });

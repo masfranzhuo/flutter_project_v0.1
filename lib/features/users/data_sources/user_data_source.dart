@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_project/core/base/data_source/data_source.dart';
+import 'package:flutter_project/core/base/exception/exception.dart';
 import 'package:flutter_project/core/services/http_client.dart';
 import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/features/users/models/user.dart';
@@ -39,8 +40,10 @@ class UserDataSourceImpl implements UserDataSource {
       return List<Map<String, dynamic>>.from(data)
           .map((item) => User.fromJson(Map<String, dynamic>.from(item)))
           .toList();
+    } on AppException catch (_) {
+      rethrow;
     } on Exception catch (e) {
-      throw Exception(e.toString());
+      throw NetworkException(message: e.toString());
     }
   }
 
@@ -55,8 +58,10 @@ class UserDataSourceImpl implements UserDataSource {
       );
 
       return User.fromJson(result.data as Map<String, dynamic>);
+    } on AppException catch (_) {
+      rethrow;
     } on Exception catch (e) {
-      throw Exception(e.toString());
+      throw NetworkException(message: e.toString());
     }
   }
 }

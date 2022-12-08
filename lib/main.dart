@@ -1,7 +1,7 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
-import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
+import 'package:flutter_i18n/loaders/decoders/json_decode_strategy.dart';
 import 'package:flutter_i18n/loaders/namespace_file_translation_loader.dart';
 import 'package:flutter_project/core/config/base_config.dart';
 import 'package:flutter_project/core/config/general_config.dart';
@@ -32,7 +32,7 @@ Future<void> main() async {
       fallbackDir: 'en_US',
       basePath: 'assets/flutter_i18n',
       // forcedLocale: const Locale('id', 'ID'),
-      decodeStrategies: [YamlDecodeStrategy()],
+      decodeStrategies: [JsonDecodeStrategy()],
     ),
     missingTranslationHandler: (key, locale) {
       debugPrint(

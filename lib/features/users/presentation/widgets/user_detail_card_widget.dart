@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_project/core/extensions/date_time_extension.dart';
-import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/features/users/models/user.dart';
+import 'package:flutter_project/ui/extensions/extensions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 
 class UserDetailCardWidget extends StatelessWidget {
   final User user;
@@ -30,43 +29,43 @@ class UserDetailCardWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${GetIt.I<TranslatorService>().translate(context, 'model.user.title')}: ${user.title}',
+                '${context.translate('model.user.title')}: ${user.title}',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${GetIt.I<TranslatorService>().translate(context, 'model.user.name')}: ${user.firstName} ${user.lastName}',
+                '${context.translate('model.user.name')}: ${user.firstName} ${user.lastName}',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${GetIt.I<TranslatorService>().translate(context, 'model.user.email')}: ${user.email}',
+                '${context.translate('model.user.email')}: ${user.email}',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${GetIt.I<TranslatorService>().translate(context, 'model.user.gender')}: ${user.gender}',
+                '${context.translate('model.user.gender')}: ${user.gender}',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${GetIt.I<TranslatorService>().translate(context, 'model.user.dateOfBirth')}: ${user.dateOfBirth!.toDate()},',
+                '${context.translate('model.user.dateOfBirth')}: ${user.dateOfBirth!.toDate()},',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${GetIt.I<TranslatorService>().translate(context, 'model.user.joinFrom')}: ${user.registerDate!.toDate()},',
+                '${context.translate('model.user.joinFrom')}: ${user.registerDate!.toDate()},',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 16.r),
               child: Text(
-                '${GetIt.I<TranslatorService>().translate(context, 'model.user.address')}: ${user.location?.country}, ${user.location?.state}, ${user.location?.city}, ${user.location?.street}',
+                '${context.translate('model.user.address')}: ${user.location?.country}, ${user.location?.state}, ${user.location?.city}, ${user.location?.street}',
               ),
             ),
           ],

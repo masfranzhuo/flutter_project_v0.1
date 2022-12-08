@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_project/core/base/exception/exception.dart';
 import 'package:flutter_project/features/users/data_sources/user_data_source.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -20,7 +21,7 @@ void main() {
   });
 
   group('getUsers', () {
-    test('should throw Exception', () async {
+    test('should throw NetworkException, when catch exception', () async {
       when(mockHttpClientService.get(
         path: anyNamed('path'),
         queryParameters: anyNamed('queryParameters'),
@@ -29,7 +30,26 @@ void main() {
 
       expect(
         () async => await dataSource.getUsers(page: 1, limit: 10),
-        throwsA(isA<Exception>()),
+        throwsA(isA<NetworkException>()),
+      );
+
+      verify(mockHttpClientService.get(
+        path: anyNamed('path'),
+        queryParameters: anyNamed('queryParameters'),
+        options: anyNamed('options'),
+      ));
+    });
+
+    test('should rethrow AppException, when catch Appexception', () async {
+      when(mockHttpClientService.get(
+        path: anyNamed('path'),
+        queryParameters: anyNamed('queryParameters'),
+        options: anyNamed('options'),
+      )).thenThrow(const InternetConnectionException());
+
+      expect(
+        () async => await dataSource.getUsers(page: 1, limit: 10),
+        throwsA(isA<AppException>()),
       );
 
       verify(mockHttpClientService.get(
@@ -64,7 +84,7 @@ void main() {
   });
 
   group('getUser', () {
-    test('should throw Exception', () async {
+    test('should throw NetworkException, when catch exception', () async {
       when(mockHttpClientService.get(
         path: anyNamed('path'),
         queryParameters: anyNamed('queryParameters'),
@@ -73,7 +93,26 @@ void main() {
 
       expect(
         () async => await dataSource.getUser(id: 'anyId'),
-        throwsA(isA<Exception>()),
+        throwsA(isA<NetworkException>()),
+      );
+
+      verify(mockHttpClientService.get(
+        path: anyNamed('path'),
+        queryParameters: anyNamed('queryParameters'),
+        options: anyNamed('options'),
+      ));
+    });
+
+    test('should rethrow AppException, when catch app exception', () async {
+      when(mockHttpClientService.get(
+        path: anyNamed('path'),
+        queryParameters: anyNamed('queryParameters'),
+        options: anyNamed('options'),
+      )).thenThrow(const InternetConnectionException());
+
+      expect(
+        () async => await dataSource.getUser(id: 'anyId'),
+        throwsA(isA<AppException>()),
       );
 
       verify(mockHttpClientService.get(

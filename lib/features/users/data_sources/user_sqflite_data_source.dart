@@ -65,7 +65,7 @@ class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
 
       return User.fromJson(map);
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -89,7 +89,7 @@ class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
           .map((item) => User.fromJson(Map<String, dynamic>.from(item)))
           .toList();
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -106,7 +106,7 @@ class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
       await sqfliteService.insert(table: _table, map: map);
       return;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -118,7 +118,7 @@ class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
       await sqfliteService.insertBulk(table: _table, maps: maps);
       return;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -128,7 +128,7 @@ class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
       await sqfliteService.delete(table: _table, id: id);
       return;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 
@@ -138,7 +138,7 @@ class UserSqfliteDataSourceImpl implements UserSqfliteDataSource {
       await sqfliteService.deleteAll(table: _table);
       return;
     } on Exception catch (e) {
-      throw LocalStorageException(message: e.toString());
+      throw LocalException(message: e.toString());
     }
   }
 }

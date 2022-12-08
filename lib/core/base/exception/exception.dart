@@ -19,9 +19,16 @@ class InternetConnectionException extends AppException {
   }) : super(code: code);
 }
 
-class LocalStorageException extends AppException {
-  const LocalStorageException({
-    String code = 'LOCAL_STORAGE_ERROR',
+class NetworkException extends AppException {
+  const NetworkException({
+    String code = 'NETWORK_ERROR',
+    super.message,
+  }) : super(code: code);
+}
+
+class LocalException extends AppException {
+  const LocalException({
+    String code = 'LOCAL_ERROR',
     super.message,
   }) : super(code: code);
 }

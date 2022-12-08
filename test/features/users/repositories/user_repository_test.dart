@@ -8,18 +8,15 @@ import '../../../helpers/helpers.dart';
 
 void main() {
   late UserRepositoryImpl repository;
-  late MockInternetConnectionService mockInternetConnectionService;
   late MockUserDataSource mockUserDataSource;
   late MockUserLocalDataSource mockUserLocalDataSource;
   // late MockUserSqfliteDataSource mockUserSqfliteDataSource;
 
   setUp(() {
-    mockInternetConnectionService = MockInternetConnectionService();
     mockUserDataSource = MockUserDataSource();
     mockUserLocalDataSource = MockUserLocalDataSource();
     // mockUserSqfliteDataSource = MockUserSqfliteDataSource();
     repository = UserRepositoryImpl(
-      internetConnectionService: mockInternetConnectionService,
       dataSource: mockUserDataSource,
       localDataSource: mockUserLocalDataSource,
       // sqfliteDataSource: mockUserSqfliteDataSource,
@@ -28,8 +25,6 @@ void main() {
 
   group('getUsers', () {
     test('should return AppException(), when catch exception', () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenAnswer((_) async => unit);
       when(mockUserDataSource.getUsers(
         page: anyNamed('page'),
         limit: anyNamed('limit'),
@@ -39,15 +34,10 @@ void main() {
 
       expect((result as Left).value, isA<AppException>());
 
-      verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
-        mockUserDataSource.getUsers(page: 1, limit: 10),
-      ]);
+      verify(mockUserDataSource.getUsers(page: 1, limit: 10));
     });
 
     test('should return AppException(), when catch app exception', () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenAnswer((_) async => unit);
       when(mockUserDataSource.getUsers(
         page: anyNamed('page'),
         limit: anyNamed('limit'),
@@ -57,41 +47,16 @@ void main() {
 
       expect((result as Left).value, isA<AppException>());
 
-      verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
-        mockUserDataSource.getUsers(page: 1, limit: 10),
-      ]);
-    });
-
-    test(
-        'should return LocalStorageException(), when catch local data source error',
-        () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenAnswer((_) async => unit);
-      when(mockUserDataSource.getUsers(
-        page: anyNamed('page'),
-        limit: anyNamed('limit'),
-      )).thenAnswer((_) async => users);
-      when(mockUserLocalDataSource.setUsers(
-        users: anyNamed('users'),
-      )).thenThrow(const LocalStorageException());
-
-      final result = await repository.getUsers(page: 1, limit: 10);
-
-      expect((result as Left).value, isA<LocalStorageException>());
-
-      verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
-        mockUserDataSource.getUsers(page: 1, limit: 10),
-        mockUserLocalDataSource.setUsers(users: users),
-      ]);
+      verify(mockUserDataSource.getUsers(page: 1, limit: 10));
     });
 
     test(
         'should return InternetConnectionException(), when catch internet connection error and empty local data source',
         () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenThrow(const InternetConnectionException());
+      when(mockUserDataSource.getUsers(
+        page: anyNamed('page'),
+        limit: anyNamed('limit'),
+      )).thenThrow(const InternetConnectionException());
       when(mockUserLocalDataSource.getUsers(
         page: anyNamed('page'),
         limit: anyNamed('limit'),
@@ -102,15 +67,18 @@ void main() {
       expect((result as Left).value, isA<InternetConnectionException>());
 
       verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
+        mockUserDataSource.getUsers(page: 1, limit: 10),
+        mockUserLocalDataSource.getUsers(page: 2, limit: 10),
       ]);
     });
 
     test(
         'should return list of users, when catch internet connection error and local data source has data',
         () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenThrow(const InternetConnectionException());
+      when(mockUserDataSource.getUsers(
+        page: anyNamed('page'),
+        limit: anyNamed('limit'),
+      )).thenThrow(const InternetConnectionException());
       when(mockUserLocalDataSource.getUsers(
         page: anyNamed('page'),
         limit: anyNamed('limit'),
@@ -121,13 +89,12 @@ void main() {
       expect((result as Right).value, users);
 
       verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
+        mockUserDataSource.getUsers(page: 1, limit: 10),
+        mockUserLocalDataSource.getUsers(page: 2, limit: 10),
       ]);
     });
 
     test('should return list of users', () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenAnswer((_) async => unit);
       when(mockUserDataSource.getUsers(
         page: anyNamed('page'),
         limit: anyNamed('limit'),
@@ -141,7 +108,6 @@ void main() {
       expect((result as Right).value, users);
 
       verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
         mockUserDataSource.getUsers(page: 1, limit: 10),
         mockUserLocalDataSource.setUsers(users: users),
       ]);
@@ -150,8 +116,6 @@ void main() {
 
   group('getUser', () {
     test('should return AppException(), when catch exception', () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenAnswer((_) async => unit);
       when(mockUserDataSource.getUser(
         id: anyNamed('id'),
       )).thenThrow(Exception());
@@ -160,15 +124,10 @@ void main() {
 
       expect((result as Left).value, isA<AppException>());
 
-      verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
-        mockUserDataSource.getUser(id: 'anyId'),
-      ]);
+      verify(mockUserDataSource.getUser(id: 'anyId'));
     });
 
     test('should return AppException(), when catch app exception', () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenAnswer((_) async => unit);
       when(mockUserDataSource.getUser(
         id: anyNamed('id'),
       )).thenThrow(const AppException());
@@ -177,46 +136,21 @@ void main() {
 
       expect((result as Left).value, isA<AppException>());
 
-      verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
-        mockUserDataSource.getUser(id: 'anyId'),
-      ]);
-    });
-
-    test(
-        'should return LocalStorageException(), when catch local data source error',
-        () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenAnswer((_) async => unit);
-      when(mockUserDataSource.getUser(
-        id: anyNamed('id'),
-      )).thenAnswer((_) async => user);
-      when(mockUserLocalDataSource.setUser(
-        user: anyNamed('user'),
-      )).thenThrow(const LocalStorageException());
-
-      final result = await repository.getUser(id: 'anyId');
-
-      expect((result as Left).value, isA<LocalStorageException>());
-
-      verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
-        mockUserDataSource.getUser(id: 'anyId'),
-        mockUserLocalDataSource.setUser(user: user),
-      ]);
+      verify(mockUserDataSource.getUser(id: 'anyId'));
     });
 
     test(
         'should return InternetConnectionException(), when catch internet connection error and empty local data source',
         () async {
-      when(mockInternetConnectionService.checkConnection())
-          .thenThrow(const InternetConnectionException());
+      when(mockUserDataSource.getUser(
+        id: anyNamed('id'),
+      )).thenThrow(const InternetConnectionException());
 
       final result = await repository.getUser(id: 'anyId');
 
       expect((result as Left).value, isA<InternetConnectionException>());
 
-      verify(mockInternetConnectionService.checkConnection());
+      verify(mockUserDataSource.getUser(id: 'anyId'));
     });
 
     test('should return user', () async {
@@ -232,7 +166,6 @@ void main() {
       expect((result as Right).value, user);
 
       verifyInOrder([
-        mockInternetConnectionService.checkConnection(),
         mockUserDataSource.getUser(id: 'anyId'),
         mockUserLocalDataSource.setUser(user: user)
       ]);

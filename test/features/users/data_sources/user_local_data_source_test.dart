@@ -52,12 +52,12 @@ void main() {
   });
 
   group('deleteAllUser', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockIsar.writeTxn(any)).thenThrow(Exception());
 
       expect(
         () async => await localDataSourceWithMock.deleteAllUser(),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verify(mockIsar.writeTxn((any)));
@@ -91,12 +91,12 @@ void main() {
   });
 
   group('deleteUser', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockIsar.writeTxn(any)).thenThrow(Exception());
 
       expect(
         () async => await localDataSourceWithMock.deleteUser(id: 'anyId'),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verify(mockIsar.writeTxn((any)));
@@ -128,7 +128,7 @@ void main() {
   });
 
   group('getUser', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockIsar.userIsars).thenReturn(mockIsarCollectionUser);
       when(mockIsarCollectionUser.getByIdString('anyId')).thenThrow(
         Exception(),
@@ -136,7 +136,7 @@ void main() {
 
       expect(
         () async => await localDataSourceWithMock.getUser(id: 'anyId'),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verifyInOrder([
@@ -162,13 +162,13 @@ void main() {
   });
 
   group('getUsers', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockIsar.userIsars).thenReturn(mockIsarCollectionUser);
       when(mockIsarCollectionUser.where()).thenThrow(Exception());
 
       expect(
         () async => await localDataSourceWithMock.getUsers(page: 1),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verifyInOrder([
@@ -221,12 +221,12 @@ void main() {
   });
 
   group('setUser', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockIsar.writeTxn(any)).thenThrow(Exception());
 
       expect(
         () async => await localDataSourceWithMock.setUser(user: user),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verify(mockIsar.writeTxn((any)));
@@ -245,12 +245,12 @@ void main() {
   });
 
   group('setUsers', () {
-    test('should throw LocalStorageException()', () async {
+    test('should throw LocalException()', () async {
       when(mockIsar.writeTxn(any)).thenThrow(Exception());
 
       expect(
         () async => await localDataSourceWithMock.setUsers(users: users),
-        throwsA(isA<LocalStorageException>()),
+        throwsA(isA<LocalException>()),
       );
 
       verify(mockIsar.writeTxn((any)));

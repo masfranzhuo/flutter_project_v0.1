@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_project/core/base/exception/exception.dart';
 import 'package:flutter_project/core/base/repository/repository.dart';
-import 'package:flutter_project/core/services/internet_connection.dart';
 import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/features/users/data_sources/user_data_source.dart';
 import 'package:flutter_project/features/users/data_sources/user_local_data_source.dart';
@@ -18,13 +17,11 @@ abstract class UserRepository extends AppRepository {
 
 @LazySingleton(as: UserRepository)
 class UserRepositoryImpl implements UserRepository {
-  final InternetConnectionService internetConnectionService;
   final UserDataSource dataSource;
   final UserLocalDataSource localDataSource;
   // final UserSqfliteDataSource sqfliteDataSource;
 
   UserRepositoryImpl({
-    required this.internetConnectionService,
     required this.dataSource,
     required this.localDataSource,
     // required this.sqfliteDataSource,
@@ -36,8 +33,6 @@ class UserRepositoryImpl implements UserRepository {
     int limit = PaginationConfig.limit,
   }) async {
     try {
-      await internetConnectionService.checkConnection();
-
       final result = await dataSource.getUsers(page: page, limit: limit);
       await localDataSource.setUsers(users: result);
       // await sqfliteDataSource.setUsers(users: result);\
@@ -62,8 +57,6 @@ class UserRepositoryImpl implements UserRepository {
       }
 
       return Left(e);
-    } on LocalStorageException catch (e) {
-      return Left(e);
     } on AppException catch (e) {
       return Left(e);
     } on Exception catch (e) {
@@ -74,15 +67,11 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Either<AppException, User>> getUser({required String id}) async {
     try {
-      await internetConnectionService.checkConnection();
-
       final result = await dataSource.getUser(id: id);
       await localDataSource.setUser(user: result);
 
       return Right(result);
     } on InternetConnectionException catch (e) {
-      return Left(e);
-    } on LocalStorageException catch (e) {
       return Left(e);
     } on AppException catch (e) {
       return Left(e);

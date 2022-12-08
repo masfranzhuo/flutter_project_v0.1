@@ -31,6 +31,7 @@ class UserDetailPage extends StatelessWidget {
     return BlocBuilder<UserDetailPageCubit, UserDetailPageState>(
       builder: (context, state) {
         return state.when(
+          initial: () => const Center(child: CircularProgressIndicator()),
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (e) => Center(child: Text(e.message)),
           loaded: (user) => UserDetailCardWidget(user: user),

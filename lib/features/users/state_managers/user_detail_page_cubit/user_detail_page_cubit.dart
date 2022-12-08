@@ -14,7 +14,7 @@ class UserDetailPageCubit extends Cubit<UserDetailPageState> {
   UserDetailPageCubit({
     required GetUser getUser,
   })  : _getUser = getUser,
-        super(Loading());
+        super(Initial());
 
   Future<void> getUser({required String id}) async {
     emit(Loading());
@@ -29,6 +29,7 @@ class UserDetailPageCubit extends Cubit<UserDetailPageState> {
 
 @freezed
 class UserDetailPageState with _$UserDetailPageState {
+  factory UserDetailPageState.initial() = Initial;
   factory UserDetailPageState.loading() = Loading;
   factory UserDetailPageState.error({required AppException e}) = Error;
   factory UserDetailPageState.loaded({required User user}) = Loaded;

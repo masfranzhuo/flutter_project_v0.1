@@ -6,7 +6,7 @@ import 'package:flutter_project/features/users/models/user.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
 
-abstract class UserLocalDataSource extends LocalDataSource {
+abstract class UserLocalDataSource extends AppDataSource {
   Future<void> setUsers({required List<User> users});
   Future<void> setUser({required User user});
   Future<List<User>> getUsers({int? page, int limit = PaginationConfig.limit});

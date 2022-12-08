@@ -5,7 +5,7 @@ part 'location.freezed.dart';
 part 'location.g.dart';
 
 @freezed
-class Location with _$Location implements AppModel {
+class Location extends AppModel with _$Location {
   factory Location({
     required String street,
     required String city,

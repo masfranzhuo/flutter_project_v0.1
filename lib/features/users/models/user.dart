@@ -7,7 +7,7 @@ part 'user.freezed.dart';
 part 'user.g.dart';
 
 @freezed
-class User with _$User implements AppModel {
+class User extends AppModel with _$User {
   @JsonSerializable(
     checked: true,
     anyMap: true,

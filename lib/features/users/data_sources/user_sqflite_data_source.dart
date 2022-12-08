@@ -7,7 +7,7 @@ import 'package:flutter_project/core/services/sqflite.dart';
 import 'package:flutter_project/features/users/models/user.dart';
 import 'package:injectable/injectable.dart';
 
-abstract class UserSqfliteDataSource extends LocalDataSource {
+abstract class UserSqfliteDataSource extends AppDataSource {
   Future<void> setUsers({required List<User> users});
   Future<void> setUser({required User user});
   Future<List<User>> getUsers({int? page, int limit = PaginationConfig.limit});

@@ -7,7 +7,7 @@ import 'package:flutter_project/core/config/general_config.dart';
 import 'package:flutter_project/features/users/models/user.dart';
 import 'package:injectable/injectable.dart';
 
-abstract class UserDataSource extends NetworkDataSource {
+abstract class UserDataSource extends AppDataSource {
   Future<List<User>> getUsers({
     required int page,
     int limit = PaginationConfig.limit,

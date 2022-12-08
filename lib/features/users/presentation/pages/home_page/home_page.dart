@@ -23,6 +23,7 @@ class _MyHomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // TODO: refactor into easy_localization
         title: Text(
           '${GetIt.I<BaseConfig>().appName} - ${context.translate(
             'label.pages.home.title',

@@ -61,7 +61,23 @@ void main() {
   });
 
   testWidgets(
-    'should find CircularProgressIndicator widget, when state isLoading is true',
+    'should find CircularProgressIndicator widget, when state is Initial',
+    (WidgetTester tester) async {
+      when(() => mockUserDetailPageCubit.state).thenReturn(Initial());
+
+      await setUpEnvironment(tester);
+
+      expect(
+        find.byWidgetPredicate(
+          (w) => w is Center && w.child is CircularProgressIndicator,
+        ),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets(
+    'should find CircularProgressIndicator widget, when state is Loading',
     (WidgetTester tester) async {
       when(() => mockUserDetailPageCubit.state).thenReturn(Loading());
 

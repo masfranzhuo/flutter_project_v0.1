@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_project/core/utils/failure.dart';
+import 'package:flutter_project/core/base/exception/exception.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class InternetConnectionService {
@@ -18,10 +18,10 @@ class InternetConnectionServiceImpl implements InternetConnectionService {
       final response = await InternetAddress.lookup('www.google.com');
 
       if (!response.isNotEmpty) {
-        throw const InternetConnectionFailure();
+        throw const InternetConnectionException();
       }
     } on SocketException catch (e) {
-      throw InternetConnectionFailure(message: e.message);
+      throw InternetConnectionException(message: e.message);
     }
   }
 
@@ -38,10 +38,10 @@ class InternetConnectionServiceImpl implements InternetConnectionService {
         return;
       } else {
         debugPrint('--- Connectivity Result: Not connected to any network');
-        throw const InternetConnectionFailure();
+        throw const InternetConnectionException();
       }
     } on Exception catch (e) {
-      throw InternetConnectionFailure(message: e.toString());
+      throw InternetConnectionException(message: e.toString());
     }
   }
 }

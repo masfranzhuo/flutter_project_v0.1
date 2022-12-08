@@ -4,12 +4,12 @@ import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:flutter_i18n/loaders/decoders/yaml_decode_strategy.dart';
 import 'package:flutter_i18n/loaders/namespace_file_translation_loader.dart';
 import 'package:flutter_project/core/config/base_config.dart';
-import 'package:flutter_project/core/config/theme_config.dart';
+import 'package:flutter_project/core/config/general_config.dart';
+import 'package:flutter_project/ui/theme/theme.dart';
 import 'package:flutter_project/core/di/injector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_project/core/config/env_config.dart';
-import 'package:flutter_project/src/presentation/pages/main_page.dart';
+import 'package:flutter_project/app/app.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -17,7 +17,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(statusBarColor: ThemeConfig.primaryColor),
+    const SystemUiOverlayStyle(statusBarColor: AppTheme.primaryColor),
   );
 
   await Hive.initFlutter();
@@ -44,7 +44,7 @@ Future<void> main() async {
   runApp(
     DevicePreview(
       enabled: GetIt.I<BaseConfig>().showDebugInfo,
-      builder: (context) => MainPage(flutterI18nDelegate: flutterI18nDelegate),
+      builder: (context) => App(flutterI18nDelegate: flutterI18nDelegate),
     ),
   );
 }

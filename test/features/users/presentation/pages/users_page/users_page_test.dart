@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_project/core/base/exception/exception.dart';
-import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/features/users/presentation/pages/users_page/users_page.dart';
 import 'package:flutter_project/features/users/presentation/widgets/user_card_widget.dart';
 import 'package:flutter_project/features/users/state_managers/users_page_cubit/users_page_cubit.dart';
@@ -17,7 +15,6 @@ import '../../../../../helpers/model_helpers.dart';
 import '../../../../../helpers/mock_helpers.dart';
 
 void main() {
-  late MockTranslatorService mockTranslatorService;
   late MockUsersPageCubit mockUsersPageCubit;
   late MockGoRouter mockGoRouter;
 
@@ -26,13 +23,9 @@ void main() {
   });
 
   setUp(() {
-    mockTranslatorService = MockTranslatorService();
     mockUsersPageCubit = MockUsersPageCubit();
     mockGoRouter = MockGoRouter();
 
-    GetIt.I.registerLazySingleton<TranslatorService>(
-      () => mockTranslatorService,
-    );
     GetIt.I.registerLazySingleton<UsersPageCubit>(
       () => mockUsersPageCubit,
     );
@@ -56,15 +49,6 @@ void main() {
       ),
     ));
   }
-
-  testWidgets('should translate these keys', (tester) async {
-    when(() => mockUsersPageCubit.state).thenReturn(UsersPageState.initial());
-    await setUpEnvironment(tester);
-
-    String translate = 'label';
-    verify(() =>
-        mockTranslatorService.translate(any(), '$translate.pages.users.title'));
-  });
 
   testWidgets(
     'should find CircularProgressIndicator widget, when state isLoading is true',
@@ -178,32 +162,6 @@ void main() {
       // await tester.pump();
 
       verify(() => mockUsersPageCubit.getUsers()).called(1);
-    },
-  );
-
-  testWidgets(
-    'should call translate error code, when return NO_DATA_ERROR exception code',
-    (WidgetTester tester) async {
-      when(() => mockUsersPageCubit.state).thenReturn(
-        UsersPageState.loaded(),
-      );
-      whenListen(
-        mockUsersPageCubit,
-        Stream.fromIterable([
-          UsersPageState.error(
-            e: const AppException(
-              code: 'NO_DATA_ERROR',
-              message: 'No more data available',
-            ),
-          ),
-        ]),
-      );
-
-      await setUpEnvironment(tester);
-
-      verify(() =>
-              mockTranslatorService.translate(any(), 'error.NO_DATA_ERROR'))
-          .called(1);
     },
   );
 

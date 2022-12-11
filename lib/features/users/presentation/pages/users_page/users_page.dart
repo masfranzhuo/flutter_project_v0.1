@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/features/users/presentation/widgets/user_card_widget.dart';
 import 'package:flutter_project/features/users/state_managers/users_page_cubit/users_page_cubit.dart';
-import 'package:flutter_project/ui/extensions/extensions.dart';
+import 'package:flutter_project/generated/locale_keys.g.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
@@ -48,7 +49,7 @@ class _UsersPageState extends State<UsersPage> {
         child: SafeArea(
           child: Scaffold(
             appBar: AppBar(
-              title: Text(context.translate('label.pages.users.title')),
+              title: Text(LocaleKeys.label_pages_users_title.tr()),
             ),
             body: LayoutBuilder(
               builder: (context, constraints) => _builder(
@@ -68,11 +69,7 @@ class _UsersPageState extends State<UsersPage> {
         state.whenOrNull(error: (_, __, e) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(
-              content: Text(
-                context.translate('error.${e.code}'),
-              ),
-            ));
+            ..showSnackBar(SnackBar(content: Text(tr('error.${e.code}'))));
         });
       },
       builder: (context, state) {

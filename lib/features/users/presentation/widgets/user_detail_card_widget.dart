@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/core/extensions/date_time_extension.dart';
 import 'package:flutter_project/features/users/models/user.dart';
-import 'package:flutter_project/ui/extensions/extensions.dart';
+import 'package:flutter_project/generated/locale_keys.g.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserDetailCardWidget extends StatelessWidget {
@@ -29,43 +30,43 @@ class UserDetailCardWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${context.translate('model.user.title')}: ${user.title}',
+                '${LocaleKeys.model_user_title.tr()}: ${user.title}',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${context.translate('model.user.name')}: ${user.firstName} ${user.lastName}',
+                '${LocaleKeys.model_user_name.tr()}: ${user.firstName} ${user.lastName}',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${context.translate('model.user.email')}: ${user.email}',
+                '${LocaleKeys.model_user_email.tr()}: ${user.email}',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${context.translate('model.user.gender')}: ${user.gender}',
+                '${LocaleKeys.model_user_gender.tr()}: ${user.gender}',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${context.translate('model.user.dateOfBirth')}: ${user.dateOfBirth!.toDate()},',
+                '${LocaleKeys.model_user_dateOfBirth.tr()}: ${user.dateOfBirth!.toDate()},',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 0),
               child: Text(
-                '${context.translate('model.user.joinFrom')}: ${user.registerDate!.toDate()},',
+                '${LocaleKeys.model_user_joinFrom.tr()}: ${user.registerDate!.toDate()},',
               ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.r, 8.r, 16.r, 16.r),
               child: Text(
-                '${context.translate('model.user.address')}: ${user.location?.country}, ${user.location?.state}, ${user.location?.city}, ${user.location?.street}',
+                '${LocaleKeys.model_user_address.tr()}: ${user.location?.country}, ${user.location?.state}, ${user.location?.city}, ${user.location?.street}',
               ),
             ),
           ],

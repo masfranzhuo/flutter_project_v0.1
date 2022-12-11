@@ -4,7 +4,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_project/core/base/exception/exception.dart';
-import 'package:flutter_project/core/services/translator.dart';
 import 'package:flutter_project/features/users/presentation/pages/user_detail_page/user_detail_page.dart';
 import 'package:flutter_project/features/users/presentation/widgets/user_detail_card_widget.dart';
 import 'package:flutter_project/features/users/state_managers/user_detail_page_cubit/user_detail_page_cubit.dart';
@@ -17,7 +16,6 @@ import '../../../../../helpers/model_helpers.dart';
 import '../../../../../helpers/mock_helpers.dart';
 
 void main() {
-  late MockTranslatorService mockTranslatorService;
   late MockUserDetailPageCubit mockUserDetailPageCubit;
 
   setUpAll(() {
@@ -25,12 +23,8 @@ void main() {
   });
 
   setUp(() {
-    mockTranslatorService = MockTranslatorService();
     mockUserDetailPageCubit = MockUserDetailPageCubit();
 
-    GetIt.I.registerLazySingleton<TranslatorService>(
-      () => mockTranslatorService,
-    );
     GetIt.I.registerLazySingleton<UserDetailPageCubit>(
       () => mockUserDetailPageCubit,
     );
@@ -51,14 +45,6 @@ void main() {
       ),
     ));
   }
-
-  testWidgets('should translate these keys', (tester) async {
-    when(() => mockUserDetailPageCubit.state).thenReturn(Loaded(user: user));
-    await setUpEnvironment(tester);
-
-    verify(() =>
-        mockTranslatorService.translate(any(), 'label.pages.userDetail.title'));
-  });
 
   testWidgets(
     'should find CircularProgressIndicator widget, when state is Initial',

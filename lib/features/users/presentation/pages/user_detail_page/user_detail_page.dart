@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_project/features/users/presentation/widgets/user_detail_card_widget.dart';
 import 'package:flutter_project/features/users/state_managers/user_detail_page_cubit/user_detail_page_cubit.dart';
-import 'package:flutter_project/ui/extensions/extensions.dart';
+import 'package:flutter_project/generated/locale_keys.g.dart';
 import 'package:get_it/get_it.dart';
 
 class UserDetailPage extends StatelessWidget {
@@ -17,7 +18,7 @@ class UserDetailPage extends StatelessWidget {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: Text(context.translate('label.pages.userDetail.title')),
+            title: Text(LocaleKeys.label_pages_userDetail_title.tr()),
           ),
           body: LayoutBuilder(
             builder: (context, constraints) => _builder(context, constraints),

@@ -12,6 +12,8 @@ Run this command
 ```
 > flutter pub get
 > flutter pub run build_runner build
+> flutter pub run easy_localization:generate --source-dir ./assets/i18n
+> flutter pub run easy_localization:generate --source-dir ./assets/i18n -f keys -o locale_keys.g.dart
 ```
 
 Create `.env` and `.env_dev` file on root folder

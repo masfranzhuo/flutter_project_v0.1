@@ -11,7 +11,7 @@ import 'package:mockito/annotations.dart';
   /// services
   ///
   HttpClientService,
-  HiveService,
+  LocalStorageService,
   InternetConnectionService,
   SqfliteService,
 

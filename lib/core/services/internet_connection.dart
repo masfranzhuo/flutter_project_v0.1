@@ -7,7 +7,6 @@ import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 abstract class InternetConnectionService {
-  Future<void> hasConnection();
   Future<void> checkConnection();
   Future<void> checkConnectivityState();
 }
@@ -15,24 +14,11 @@ abstract class InternetConnectionService {
 @LazySingleton(as: InternetConnectionService)
 class InternetConnectionServiceImpl implements InternetConnectionService {
   @override
-  Future<void> hasConnection() async {
+  Future<void> checkConnection() async {
     try {
       bool result = await InternetConnectionChecker().hasConnection;
 
       if (!result) {
-        throw const InternetConnectionException();
-      }
-    } on SocketException catch (e) {
-      throw InternetConnectionException(message: e.message);
-    }
-  }
-
-  @override
-  Future<void> checkConnection() async {
-    try {
-      final response = await InternetAddress.lookup('www.google.com');
-
-      if (!response.isNotEmpty) {
         throw const InternetConnectionException();
       }
     } on SocketException catch (e) {

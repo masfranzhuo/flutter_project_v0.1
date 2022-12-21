@@ -28,5 +28,5 @@ APP_ID = XXXXXX // get API key at https://dummyapi.io
 - Localization
 - Responsive
 - Dio as Http Service
-- Hive, Isar and sqflite as Local Storage
+- Flutter Secure Storagte, Hive, Isar and sqflite as Local Storage
 - Device Preview to preview from any device
